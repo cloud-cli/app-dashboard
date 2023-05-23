@@ -7,24 +7,23 @@ export function useLogin() {
   const { authHost } = useSettings();
 
   const checkLoginStatus = async () => {
-    const response = await fetch(unref(authHost) + '/profile', {
+    const response = await fetch(new URL('/profile', unref(authHost)), {
       method: 'GET',
       mode: 'cors',
       credentials: 'include',
     });
 
-    isLoggedIn.value = response.status === 200;
+    isLoggedIn.value = response.ok && response.status === 200;
 
     if (isLoggedIn.value) {
       profile.value = await response.json();
+      return;
     }
-  };
 
-  const logIn = () => {
-    location.href = unref(authHost) + '/login?url=' + encodeURIComponent(location.href);
+    location.href = String(new URL('/login?url=' + encodeURIComponent(location.href), unref(authHost)));
   };
 
   onMounted(checkLoginStatus);
 
-  return { isLoggedIn, profile, logIn };
+  return { isLoggedIn, profile };
 }
