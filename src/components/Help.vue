@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-4">
-    <h1 class="text-4xl font-bold mb-4">Available Commands</h1>
+    <h1 class="text-2xl font-bold mb-4">Available Commands</h1>
     <div v-for="(subcommands, parent) in commands"
       :key="parent"
       class="mb-6">
