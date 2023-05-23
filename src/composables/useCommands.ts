@@ -6,7 +6,7 @@ export function useCommands() {
   const { apiSecret, apiHost } = useSettings();
 
   const fetchCommands = async () => {
-    const response = await globalThis.fetch(unref(apiHost), {
+    const response = await fetch(new URL('.help', unref(apiHost)), {
       headers: {
         Authorization: `Bearer ${unref(apiSecret)}`,
       },
