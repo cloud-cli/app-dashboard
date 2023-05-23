@@ -6,18 +6,24 @@ export function useCommands() {
   const { apiSecret, apiHost } = useSettings();
 
   const fetchCommands = async () => {
+    const secret = unref(apiSecret);
+
+    if (!secret) {
+      return;
+    }
+
     const response = await fetch(new URL('.help', unref(apiHost)), {
       headers: {
-        Authorization: `Bearer ${unref(apiSecret)}`,
+        Authorization: secret,
       },
     });
 
     if (response.ok) {
-      const data = await response.json();
-      commands.value = data;
-    } else {
-      console.error('Failed to fetch commands', response.status);
+      commands.value = await response.json();
+      return;
     }
+
+    console.error('Failed to fetch commands', response.status);
   };
 
   onMounted(fetchCommands);
