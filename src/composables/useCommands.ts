@@ -11,11 +11,11 @@ export function useCommands() {
 
   const _commands: any = {};
   const commands = ref<any>(new Proxy(_commands, {
-    get(outer: string) {
+    get(_a: any, outer: string) {
       if (!_commands[outer]) {
         const innerProxy = {};
         _commands[outer] = new Proxy(innerProxy, {
-          get(inner: string) {
+          get(_b: any, inner: string) {
             return (args: any) => run(`${outer}.${inner}`, args);
           }
         });
