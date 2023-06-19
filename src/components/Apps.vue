@@ -1,31 +1,29 @@
 <template>
   <div class="container mx-auto px-4">
     <table class="table-auto w-full">
-      <thead>
+      <thead class="bg-gray-200">
         <tr>
-          <th>Status</th>
-          <th>Name</th>
-          <th>Host</th>
-          <th>Image</th>
-          <th>Ports</th>
-          <th>Volumes</th>
-          <th>Actions</th>
+          <th class="p-2">&nbsp;</th>
+          <th class="p-2">Name</th>
+          <th class="p-2">Host</th>
+          <th class="p-2">Image</th>
+          <th class="p-2">Ports</th>
+          <th class="p-2">Volumes</th>
+          <th class="p-2">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="app in apps" :key="app.name">
-          <td>
-            <span class="material-icons" :class="app.status === 'running' ? 'text-green-500' : 'text-red-500'">
-              {{ app.status === 'running' ? 'check_circle' : 'error' }}
-            </span>
+          <td class="p-2">
+            <span class="material-icons" :class="app.status === 'running' ? 'text-green-500' : 'text-red-500'">circle</span>
           </td>
           <td>{{ app.name }}</td>
-          <td>{{ app.host }}</td>
+          <td><a :href="'https://' + app.host" target="_blank">{{ app.host }}</a></td>
           <td>{{ app.image }}</td>
           <td>{{ app.ports }}</td>
           <td>{{ app.volumes }}</td>
           <td>
-            <button class="py-1 px-3 bg-blue-500 text-white rounded" @click="restart(app.name)">
+            <button class="p-2 bg-blue-500 text-white rounded leading-4" @click="restart(app.name)">
               <span class="material-icons">refresh</span>
             </button>
           </td>

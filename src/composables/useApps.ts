@@ -14,6 +14,8 @@ export function useApps() {
   const { commands } = useCommands();
   const apps = ref<App[]>([]);
 
+  const shortenImage = (image: string) => image.replace('ghcr.io/', 'gh:').replace(':latest', '')
+
   async function refresh() {
     const { dx } = unref(commands);
     const list: Array<Omit<App, "status">> = await dx.list();
@@ -21,6 +23,7 @@ export function useApps() {
 
     apps.value = list.map((app) => ({
       ...app,
+      image: shortenImage(app.image),
       status: running.includes(app.name) ? "running" : "stopped",
     })) as App[];
   }
