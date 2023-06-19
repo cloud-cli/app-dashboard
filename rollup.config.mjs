@@ -1,3 +1,3 @@
-import defaults from '@cloud-cli/rollup-config';
+import defaults from "@cloud-cli/rollup-config";
 
-export default { ...defaults, external: [] };
+export default { ...defaults };
