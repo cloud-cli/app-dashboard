@@ -3,7 +3,7 @@
     <!-- Sticky header -->
     <div class="sticky top-0 z-50 bg-white flex justify-between items-center px-4 py-2 shadow-md">
       <h1 class="text-2xl font-bold">Cloudy</h1>
-      <div>Hi, {{ profile.name }}</div>
+      <div>Hi, {{ profile.id }}</div>
     </div>
 
     <!-- Sidebar -->
@@ -31,15 +31,13 @@
 
 <script setup>
 import { defineComponent, ref } from 'vue';
-import routes from '../routes';
 import Error from './components/ui/Error.vue';
 import { useLogin } from '../composables/useLogin';
 import { useCommands } from './composables/useCommands';
+import { useRouter } from './composables/useRouter';
 
 const { isLoggedIn, profile } = useLogin();
-const { routes } = useRouter();
 const { error, hasCommand } = useCommands();
+const { routes } = useRouter();
 const enabledRoutes = ref(routes.filter(r => (!r.command || hasCommand(r.command))));
-
-return { isLoggedIn, profile, routes: enabledRoutes };
 </script>

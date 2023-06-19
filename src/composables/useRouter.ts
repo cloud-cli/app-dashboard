@@ -30,6 +30,6 @@ export const router = createRouter({
   routes,
 });
 
-export function useNavigation() {
+export function useRouter() {
   return { router, routes };
 }
