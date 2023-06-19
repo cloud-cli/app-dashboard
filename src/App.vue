@@ -57,6 +57,6 @@ onMounted(() => {
     return;
   }
 
-  fetchCommands
+  fetchCommands()
 });
 </script>
