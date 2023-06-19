@@ -15,16 +15,16 @@ export function useApps() {
   const apps = ref<App[]>([]);
 
   async function refresh() {
-    const list = await _.dx.list();
-    const running = await _.dx.ps();
+    const list: Array<Omit<App, "status">> = await _.dx.list();
+    const running: string[] = await _.dx.ps();
 
-    apps.value = (list as any).map((app) => ({
+    apps.value = list.map((app) => ({
       ...app,
       status: running.includes(app.name) ? "running" : "stopped",
-    }));
+    })) as App[];
   }
 
-  const restart = async (name) => {
+  const restart = async (name: string) => {
     await _.dx.stop({ name });
     await _.dx.start({ name });
   };

@@ -2,11 +2,11 @@ import { unref, ref, onMounted } from "vue";
 import { useSettings } from "./useSettings";
 
 export function useCommands() {
-  const help = ref<any>({});
+  const help = ref<Record<string, string[]>>({});
   const modules = ref<string[]>([]);
-  const error = ref<string>('');
+  const error = ref<string>("");
   const commands = ref<any>({});
-  const hasCommand = (name) => modules.includes(name);
+  const hasCommand = (name: string) => modules.includes(name);
   const clearError = () => (error.value = "");
   const { apiSecret, apiHost } = useSettings();
 
@@ -24,8 +24,8 @@ export function useCommands() {
     });
 
     if (response.ok) {
-      commands.value = await response.json();
-      modules.value = Object.keys(tree);
+      help.value = await response.json();
+      modules.value = Object.keys(commands.value);
       updateCommandTree();
       return;
     }
@@ -37,9 +37,9 @@ export function useCommands() {
     const tree = (commands.value = {});
 
     Object.entries(unref(help)).forEach(([parent, commands]) => {
-      tree[parent] = {};
+      tree[parent] = {} as Record<string, any>;
       commands.forEach((cmd: string) => {
-        tree[cmd] = (args) => run(`${parent}.${cmd}`, args);
+        tree[cmd] = (args: any) => run(`${parent}.${cmd}`, args);
       });
     });
   }
