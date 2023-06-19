@@ -1,14 +1,29 @@
-import { unref, ref, onMounted } from "vue";
+import { unref, ref } from "vue";
 import { useSettings } from "./useSettings";
 
 export function useCommands() {
   const help = ref<Record<string, string[]>>({});
   const modules = ref<string[]>([]);
   const error = ref<string>("");
-  const commands = ref<any>({});
   const hasCommand = (name: string) => unref(modules).includes(name);
   const clearError = () => (error.value = "");
   const { apiSecret, apiHost } = useSettings();
+
+  const _commands: any = {};
+  const commands = ref<any>(new Proxy(_commands, {
+    get(outer: string) {
+      if (!_commands[outer]) {
+        const innerProxy = {};
+        _commands[outer] = new Proxy(innerProxy, {
+          get(inner: string) {
+            return (args: any) => run(`${outer}.${inner}`, args);
+          }
+        });
+      }
+
+      return _commands[outer];
+    }
+  }));
 
   async function fetchCommands() {
     const secret = unref(apiSecret);
@@ -26,22 +41,10 @@ export function useCommands() {
     if (response.ok) {
       help.value = await response.json();
       modules.value = Object.keys(commands.value);
-      updateCommandTree();
       return;
     }
 
     error.value = "Failed to fetch commands: " + response.status;
-  }
-
-  function updateCommandTree() {
-    const tree = (commands.value = {}) as any;
-
-    Object.entries(unref(help)).forEach(([parent, commands]) => {
-      tree[parent] = {} as Record<string, any>;
-      commands.forEach((cmd: string) => {
-        tree[cmd] = (args: any) => run(`${parent}.${cmd}`, args);
-      });
-    });
   }
 
   async function run(name: string, args: any) {
@@ -64,8 +67,6 @@ export function useCommands() {
 
     error.value = await response.text();
   }
-
-  onMounted(fetchCommands);
 
   return {
     help,

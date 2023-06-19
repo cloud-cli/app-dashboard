@@ -37,7 +37,9 @@ import { useCommands } from './composables/useCommands';
 import { useRouter } from './composables/useRouter';
 
 const { isLoggedIn, profile } = useLogin();
-const { error, hasCommand } = useCommands();
+const { error, fetchCommands, hasCommand } = useCommands();
 const { routes } = useRouter();
 const enabledRoutes = ref(routes.filter(r => (!r.command || hasCommand(r.command))));
+
+onMounted(fetchCommands);
 </script>
