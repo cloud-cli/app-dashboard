@@ -25,7 +25,9 @@
           <td>{{ app.ports }}</td>
           <td>{{ app.volumes }}</td>
           <td>
-            <button class="py-1 px-3 bg-blue-500 text-white rounded" @click="restartApp(app)">Restart</button>
+            <button class="py-1 px-3 bg-blue-500 text-white rounded" @click="restart(app.name)">
+              <span class="material-icons">refresh</span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -34,7 +36,7 @@
 </template>
 
 <script setup>
-import { apps, restart } from '../composables/useApps';
+import { useApps } from '../composables/useApps';
 
-const restartApp = (app) => restart(app.name);
+const { apps, restart } = useApps();
 </script>
