@@ -14,13 +14,15 @@ const routes = [
     path: "/help",
     name: "Help",
     icon: "help_outline",
+    protected: true,
     component: Help,
   },
   {
     path: "/apps",
-    name: "Status",
+    name: "Apps",
     icon: "toc",
-    command: 'dx',
+    command: "dx",
+    protected: true,
     component: Apps,
   },
 ];

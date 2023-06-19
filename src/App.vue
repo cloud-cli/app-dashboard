@@ -1,5 +1,5 @@
 <template >
-  <template v-if="isLoggedIn">
+  <template>
     <!-- Sticky header -->
     <div class="z-50 bg-white flex justify-between items-center px-4 py-2 shadow-md">
       <h1 class="text-2xl font-bold">Cloudy</h1>
@@ -30,16 +30,35 @@
 </template>
 
 <script setup>
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, unref, onMounted, computed } from 'vue';
 import Error from './components/ui/Error.vue';
 import { useLogin } from './composables/useLogin';
 import { useCommands } from './composables/useCommands';
+import { useSettings } from './composables/useSettings';
 import { useRouter } from './composables/useRouter';
 
 const { isLoggedIn, profile } = useLogin();
 const { error, fetchCommands, hasCommand } = useCommands();
 const { routes } = useRouter();
-const enabledRoutes = ref(routes.filter(r => (!r.command || hasCommand(r.command))));
+const { authHost } = useSettings();
+const enabledRoutes = computed(() => {
+  const auth = unref(isLoggedIn);
 
-onMounted(fetchCommands);
+  return routes.filter(r => {
+    const hideIfNoCommand = (!r.command || hasCommand(r.command));
+    const hideIfProtected = (!r.protected || (r.protected && auth));
+
+    return hideIfNoCommand && hideIfProtected;
+  });
+});
+
+onMounted(() => {
+  const host = unref(authHost);
+
+  if (!host) {
+    return;
+  }
+
+  fetchCommands
+});
 </script>
