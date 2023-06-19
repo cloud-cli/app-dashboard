@@ -8,4 +8,6 @@ jobs:
       name: cloud-cli/app-dashboard
       baseImage: cloud-cli/node:latest
       defaultBranch: main
+      withSha: false
+      withTag: true
       type: node
