@@ -1,21 +1,22 @@
-import { ref, Ref, watchEffect } from 'vue';
+import { ref, Ref, watchEffect } from "vue";
 
 const refs: Record<string, Ref> = {};
 
-export function useLocalStorage(key: string, defaultValue = '') {
+export function useLocalStorage(key: string, defaultValue = "") {
   if (refs[key]) {
     return refs[key];
   }
 
-  const value = ref(localStorage.getItem(key) || defaultValue);
+  const readValue = () => {
+    const v = localStorage.getItem(key);
+    value.value = v !== null ? v : defaultValue;
+  };
 
-  watchEffect(() => {
-    localStorage.setItem(key, value.value);
-  });
+  const value = ref(null);
+  readValue();
 
-  window.addEventListener('storage', () => {
-    value.value = localStorage.getItem(key) || defaultValue;
-  });
+  window.addEventListener("storage", readValue);
+  watchEffect(() => localStorage.setItem(key, value.value));
 
   refs[key] = value;
 
