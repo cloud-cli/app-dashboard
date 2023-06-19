@@ -8,11 +8,11 @@ export function useLocalStorage(key: string, defaultValue = "") {
   }
 
   const readValue = () => {
-    const v = localStorage.getItem(key);
-    value.value = v !== null ? v : defaultValue;
+    const v: string | null = localStorage.getItem(key);
+    value.value = v !== null ? String(v) : defaultValue;
   };
 
-  const value = ref(null);
+  const value = ref('');
   readValue();
 
   window.addEventListener("storage", readValue);

@@ -2,10 +2,10 @@ import { unref, ref, onMounted } from "vue";
 import { useSettings } from "./useSettings";
 
 export function useCommands() {
-  const help = ref({});
-  const modules = ref([]);
-  const error = ref([]);
-  const commands = ref({});
+  const help = ref<any>({});
+  const modules = ref<string[]>([]);
+  const error = ref<string>('');
+  const commands = ref<any>({});
   const hasCommand = (name) => modules.includes(name);
   const clearError = () => (error.value = "");
   const { apiSecret, apiHost } = useSettings();
@@ -38,7 +38,7 @@ export function useCommands() {
 
     Object.entries(unref(help)).forEach(([parent, commands]) => {
       tree[parent] = {};
-      commands.forEach((cmd) => {
+      commands.forEach((cmd: string) => {
         tree[cmd] = (args) => run(`${parent}.${cmd}`, args);
       });
     });

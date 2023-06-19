@@ -1,16 +1,26 @@
 import { useCommands } from "./useCommands";
+import { ref, onMounted } from "vue";
+
+interface App {
+  id: number;
+  name: string;
+  image: string;
+  ports: string;
+  volumes: string;
+  status: "running" | "stopped";
+}
 
 export function useApps() {
   const { commands: _ } = useCommands();
-  const apps = ref([]);
+  const apps = ref<App[]>([]);
 
   async function refresh() {
-    const apps = await _.dx.list();
+    const list = await _.dx.list();
     const running = await _.dx.ps();
 
-    apps.value = apps.map((app) => ({
+    apps.value = (list as any).map((app) => ({
       ...app,
-      running: running.includes(app.name),
+      status: running.includes(app.name) ? "running" : "stopped",
     }));
   }
 
