@@ -10,20 +10,22 @@ export function useCommands() {
   const { apiSecret, apiHost } = useSettings();
 
   const _commands: any = {};
-  const commands = ref<any>(new Proxy(_commands, {
-    get(_a: any, outer: string) {
-      if (!_commands[outer]) {
-        const innerProxy = {};
-        _commands[outer] = new Proxy(innerProxy, {
-          get(_b: any, inner: string) {
-            return (args: any) => run(`${outer}.${inner}`, args);
-          }
-        });
-      }
+  const commands = ref<any>(
+    new Proxy(_commands, {
+      get(_a: any, outer: string) {
+        if (!_commands[outer]) {
+          const innerProxy = {};
+          _commands[outer] = new Proxy(innerProxy, {
+            get(_b: any, inner: string) {
+              return (args: any) => run(`${outer}.${inner}`, args);
+            },
+          });
+        }
 
-      return _commands[outer];
-    }
-  }));
+        return _commands[outer];
+      },
+    })
+  );
 
   async function fetchCommands() {
     const secret = unref(apiSecret);
@@ -58,8 +60,8 @@ export function useCommands() {
       headers: {
         Authorization: secret,
       },
-      method: 'POST',
-      body: args ? JSON.stringify(args) : undefined,
+      method: "POST",
+      body: args ? JSON.stringify(args) : "{}",
     });
 
     if (response.ok) {
