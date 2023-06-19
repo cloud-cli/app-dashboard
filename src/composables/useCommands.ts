@@ -58,6 +58,7 @@ export function useCommands() {
       headers: {
         Authorization: secret,
       },
+      method: 'POST',
       body: args ? JSON.stringify(args) : undefined,
     });
 
