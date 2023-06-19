@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import Error from './components/ui/Error.vue';
 import { useLogin } from './composables/useLogin';
 import { useCommands } from './composables/useCommands';
