@@ -6,7 +6,7 @@ export function useCommands() {
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const commands = ref<any>({});
-  const hasCommand = (name: string) => modules.includes(name);
+  const hasCommand = (name: string) => unref(modules).includes(name);
   const clearError = () => (error.value = "");
   const { apiSecret, apiHost } = useSettings();
 
@@ -34,7 +34,7 @@ export function useCommands() {
   }
 
   function updateCommandTree() {
-    const tree = (commands.value = {});
+    const tree = (commands.value = {}) as any;
 
     Object.entries(unref(help)).forEach(([parent, commands]) => {
       tree[parent] = {} as Record<string, any>;
@@ -44,7 +44,7 @@ export function useCommands() {
     });
   }
 
-  async function run(name, args) {
+  async function run(name: string, args: any) {
     const secret = unref(apiSecret);
 
     if (!secret) {
