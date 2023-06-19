@@ -3,7 +3,7 @@
     <!-- Sticky header -->
     <div class="sticky top-0 z-50 bg-white flex justify-between items-center px-4 py-2 shadow-md">
       <h1 class="text-2xl font-bold">Cloudy</h1>
-      <div>Hi, {{ profile.id }}</div>
+      <div>Hi, {{ profile.displayName }}</div>
     </div>
 
     <!-- Sidebar -->

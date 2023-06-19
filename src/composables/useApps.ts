@@ -11,12 +11,13 @@ interface App {
 }
 
 export function useApps() {
-  const { commands: _ } = useCommands();
+  const { commands } = useCommands();
   const apps = ref<App[]>([]);
 
   async function refresh() {
-    const list: Array<Omit<App, "status">> = await _.dx.list();
-    const running: string[] = await _.dx.ps();
+    const { dx } = unref(commands);
+    const list: Array<Omit<App, "status">> = await dx.list();
+    const running: string[] = await dx.ps();
 
     apps.value = list.map((app) => ({
       ...app,
@@ -25,8 +26,9 @@ export function useApps() {
   }
 
   const restart = async (name: string) => {
-    await _.dx.stop({ name });
-    await _.dx.start({ name });
+    const { dx } = unref(commands);
+    await dx.stop({ name });
+    await dx.start({ name });
   };
 
   onMounted(refresh);
