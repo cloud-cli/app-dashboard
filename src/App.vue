@@ -36,17 +36,18 @@ import { useSettings } from './composables/useSettings';
 import { useRouter } from './composables/useRouter';
 
 const { isLoggedIn, profile } = useLogin();
-const { error, fetchCommands, hasCommand } = useCommands();
+const { error, modules, fetchCommands, hasCommand } = useCommands();
 const { topPages } = useRouter();
 const { authHost } = useSettings();
 const enabledRoutes = computed(() => {
   const auth = unref(isLoggedIn);
+  const m = unref(modules);
 
   return topPages.filter(r => {
-    const hideIfNoCommand = (!r.command || hasCommand(r.command));
-    const hideIfProtected = (!r.protected || (r.protected && auth));
+    const showForCommand = (!r.command || m.includes(r.command));
+    const showProtected = (!r.protected || auth);
 
-    return hideIfNoCommand && hideIfProtected;
+    return showForCommand && showProtected;
   });
 });
 
