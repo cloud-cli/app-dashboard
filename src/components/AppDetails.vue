@@ -1,92 +1,99 @@
 <template>
   <div class="container mx-auto px-4">
-    <h1 class="text-4xl font-bold mb-4">{{ app.name }}</h1>
+    <Spinner class="my-6 mx-auto" v-if="!app" />
 
-    <div class="text-right mb-4">
-      <Spinner :visible="loading" class="mr-4" />
-      <button
-        class="px-2 bg-blue-500 text-white rounded leading-4"
-        @click="restartApp()"
-      >
-        <span class="material-icons">refresh</span>
-      </button>
-      <button
-        class="px-2 bg-red-500 text-white rounded leading-4"
-        @click="refreshApp()"
-      >
-        <span class="material-icons">cloud_download</span>
-      </button>
-    </div>
+    <template v-else>
+      <h1 class="text-4xl font-bold mb-4">{{ app.name }}</h1>
 
-    <form @submit.prevent="updateApp()">
-      <div class="mb-4">
-        <label
-          for="image"
-          class="block uppercase text-xs font-medium text-gray-700"
-          >Image</label
+      <div class="text-right mb-4">
+        <Spinner :visible="loading" class="mr-4" />
+        <button
+          class="px-2 bg-blue-500 text-white rounded leading-4"
+          @click="restartApp()"
         >
-        <input
-          id="image"
-          v-model="app.image"
-          type="text"
-          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-        />
-      </div>
-      <div class="mb-4">
-        <label
-          for="host"
-          class="block uppercase text-xs font-medium text-gray-700"
-          >Host</label
+          <span class="material-icons">refresh</span>
+        </button>
+        <button
+          class="px-2 bg-red-500 text-white rounded leading-4"
+          @click="refreshApp()"
         >
-        <input
-          id="host"
-          v-model="app.host"
-          type="text"
-          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-        />
-      </div>
-      <div class="mb-4">
-        <label
-          for="volumes"
-          class="block uppercase text-xs font-medium text-gray-700"
-          >Volumes</label
-        >
-        <input
-          id="volumes"
-          v-model="app.volumes"
-          type="text"
-          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-        />
-      </div>
-      <div class="text-right">
-        <button type="submit" class="py-2 px-4 bg-blue-500 text-white rounded">
-          Save
+          <span class="material-icons">cloud_download</span>
         </button>
       </div>
-    </form>
 
-    <template v-for="(env, index) of envList" :key="env.key">
-      <div class="mb-4">
-        <span class="block uppercase text-xs font-medium text-gray-700"
-          >Key</span
-        >
-        <span
-          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-          >{{ env.key }}</span
-        >
-      </div>
-      <div class="mb-4">
-        <label
-          :for="'k' + index"
-          class="block uppercase text-xs font-medium text-gray-700"
-          >Value</label
-        >
-        <input
-          :id="'k' + index"
-          @change="updateEnv(env)"
-          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-        />
-      </div>
+      <form @submit.prevent="updateApp()">
+        <div class="mb-4">
+          <label
+            for="image"
+            class="block uppercase text-xs font-medium text-gray-700"
+            >Image</label
+          >
+          <input
+            id="image"
+            v-model="app.image"
+            type="text"
+            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="host"
+            class="block uppercase text-xs font-medium text-gray-700"
+            >Host</label
+          >
+          <input
+            id="host"
+            v-model="app.host"
+            type="text"
+            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            for="volumes"
+            class="block uppercase text-xs font-medium text-gray-700"
+            >Volumes</label
+          >
+          <input
+            id="volumes"
+            v-model="app.volumes"
+            type="text"
+            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+          />
+        </div>
+        <div class="text-right">
+          <button
+            type="submit"
+            class="py-2 px-4 bg-blue-500 text-white rounded"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+
+      <template v-for="(env, index) of envList" :key="env.key">
+        <div class="mb-4">
+          <span class="block uppercase text-xs font-medium text-gray-700"
+            >Key</span
+          >
+          <span
+            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+            >{{ env.key }}</span
+          >
+        </div>
+        <div class="mb-4">
+          <label
+            :for="'k' + index"
+            class="block uppercase text-xs font-medium text-gray-700"
+            >Value</label
+          >
+          <input
+            :id="'k' + index"
+            @change="updateEnv(env)"
+            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+          />
+        </div>
+      </template>
     </template>
   </div>
 </template>
