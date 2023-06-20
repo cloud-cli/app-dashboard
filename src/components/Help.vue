@@ -14,7 +14,9 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { useCommands } from '../composables/useCommands';
 
-const { help } = useCommands();
+const { help, fetchCommands } = useCommands();
+onMounted(fetchCommands);
 </script>

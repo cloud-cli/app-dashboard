@@ -2,8 +2,9 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import Help from "../components/Help.vue";
 import Settings from "../components/Settings.vue";
 import Apps from "../components/Apps.vue";
+import AppDetails from "../components/AppDetails.vue";
 
-const routes = [
+const topPages = [
   {
     path: "/settings",
     name: "Settings",
@@ -27,11 +28,21 @@ const routes = [
   },
 ];
 
+const routes = [
+  ...topPages,
+  {
+    path: "/apps/:name",
+    name: "AppDetails",
+    protected: true,
+    component: AppDetails,
+  },
+]
+
 export const router = createRouter({
   history: createWebHashHistory("/"),
   routes,
 });
 
 export function useRouter() {
-  return { router, routes };
+  return { router, routes, topPages };
 }

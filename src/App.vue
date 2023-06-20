@@ -37,12 +37,12 @@ import { useRouter } from './composables/useRouter';
 
 const { isLoggedIn, profile } = useLogin();
 const { error, fetchCommands, hasCommand } = useCommands();
-const { routes } = useRouter();
+const { topPages } = useRouter();
 const { authHost } = useSettings();
 const enabledRoutes = computed(() => {
   const auth = unref(isLoggedIn);
 
-  return routes.filter(r => {
+  return topPages.filter(r => {
     const hideIfNoCommand = (!r.command || hasCommand(r.command));
     const hideIfProtected = (!r.protected || (r.protected && auth));
 
