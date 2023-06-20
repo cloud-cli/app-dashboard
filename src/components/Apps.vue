@@ -17,21 +17,21 @@
     </div>
 
     <template v-if="viewMode.list">
-      <div class="grid gap-2 grid-cols-1">
+      <div class="grid gap-1 grid-cols-1">
         <div
           class="rounded shadow flex p-2"
           v-for="app in filteredList"
           :key="app.name"
         >
           <span
-            class="material-icons text-sm mr-2"
+            class="material-icons text-sm mr-2 mt-1"
             :class="[
               app.status === 'running' ? 'text-green-500' : 'text-red-500',
             ]"
           >
             circle
           </span>
-          <div class="w-1/2">
+          <div class="w-1/3">
             <router-link :to="'/apps/' + app.name">{{ app.name }}</router-link>
             <a
               class="underline text-blue-500 text-sm ml-4"
@@ -40,10 +40,10 @@
               >{{ app.host }}</a
             >
           </div>
-          <div class="text-sm text-gray-400">
+          <div class="text-sm text-gray-500 w-1/3">
             {{ app.image }}
           </div>
-          <div class="text-sm text-gray-400">
+          <div class="text-sm text-gray-500 w-1/3">
             {{ app.volumes }}
           </div>
         </div>
