@@ -17,31 +17,33 @@
     </div>
 
     <template v-if="viewMode.list">
-      <div class="grid gap-4 grid-cols-1">
+      <div class="grid gap-2 grid-cols-1">
         <div
-          class="rounded shadow flex"
+          class="rounded shadow flex p-2"
           v-for="app in filteredList"
           :key="app.name"
         >
           <span
-            class="material-icons text-sm"
+            class="material-icons text-sm mr-2"
             :class="[
               app.status === 'running' ? 'text-green-500' : 'text-red-500',
             ]"
           >
             circle
           </span>
-          <div class="flex-grow">
+          <div class="w-1/2">
             <router-link :to="'/apps/' + app.name">{{ app.name }}</router-link>
             <a
-              class="underline text-blue-500 text-sm"
+              class="underline text-blue-500 text-sm ml-4"
               :href="'https://' + app.host"
               target="_blank"
               >{{ app.host }}</a
             >
           </div>
-          <div class="text-sm">
-            <span class="font-bold">{{ app.image }}</span>
+          <div class="text-sm text-gray-400">
+            {{ app.image }}
+          </div>
+          <div class="text-sm text-gray-400">
             {{ app.volumes }}
           </div>
         </div>
@@ -89,7 +91,7 @@ import { useApps } from "../composables/useApps";
 const { apps, restart } = useApps();
 const restarting = ref({});
 const search = ref("");
-const showGrid = ref("");
+const showGrid = ref(true);
 const viewMode = computed(() => ({
   grid: showGrid.value,
   list: !showGrid.value,
