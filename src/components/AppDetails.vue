@@ -88,6 +88,7 @@
           >
           <input
             :id="'k' + index"
+            v-model="env.value"
             @change="updateEnv(env)"
             class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
           />
