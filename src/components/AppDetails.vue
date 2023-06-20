@@ -104,7 +104,7 @@ import { useCommands } from "../composables/useCommands";
 import { useRoute } from "vue-router";
 import Spinner from "./ui/Spinner.vue";
 
-const commands = useCommands();
+const { commands } = useCommands();
 const app = ref(null);
 const env = ref([]);
 const route = useRoute();
