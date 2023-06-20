@@ -110,8 +110,12 @@ const env = ref([]);
 const route = useRoute();
 const loading = ref(false);
 
+const props = defineProps({
+  name: { type: String, default: "" },
+});
+
 onMounted(async () => {
-  const name = route.params.id;
+  const name = props.name;
   app.value = await commands.dx.get({ name });
   env.value = await commands.env.show({ name });
 });

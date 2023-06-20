@@ -34,9 +34,10 @@ const routes = [
     path: "/apps/:name",
     name: "AppDetails",
     protected: true,
+    props: true,
     component: AppDetails,
   },
-]
+];
 
 export const router = createRouter({
   history: createWebHashHistory("/"),
