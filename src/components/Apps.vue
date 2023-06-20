@@ -17,45 +17,38 @@
     </div>
 
     <template v-if="viewMode.list">
-      <table class="table-auto w-full">
-        <thead class="sr-only">
-          <tr>
-            <th class="px-2">&nbsp;</th>
-            <th class="px-2">Name</th>
-            <th class="px-2">Host</th>
-            <th class="px-2">Image</th>
-            <th class="px-2">Volumes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="app in filteredList" :key="app.name">
-            <td class="leading-3">
-              <span
-                class="material-icons text-sm"
-                :class="[
-                  app.status === 'running' ? 'text-green-500' : 'text-red-500',
-                ]"
-                >circle</span
-              >
-            </td>
-            <td>
-              <route-link :path="'/apps/' + app.name">
-                {{ app.name }}
-              </route-link>
-            </td>
-            <td>
-              <a :href="'https://' + app.host" target="_blank">{{
-                app.host
-              }}</a>
-            </td>
-            <td>{{ app.image }}</td>
-            <td>{{ app.volumes }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="grid gap-4 grid-cols-1">
+        <div
+          class="rounded shadow flex"
+          v-for="app in filteredList"
+          :key="app.name"
+        >
+          <span
+            class="material-icons text-sm"
+            :class="[
+              app.status === 'running' ? 'text-green-500' : 'text-red-500',
+            ]"
+          >
+            circle
+          </span>
+          <div class="flex-grow">
+            <router-link :to="'/apps/' + app.name">{{ app.name }}</router-link>
+            <a
+              class="underline text-blue-500 text-sm"
+              :href="'https://' + app.host"
+              target="_blank"
+              >{{ app.host }}</a
+            >
+          </div>
+          <div class="text-sm">
+            <span class="font-bold">{{ app.image }}</span>
+            {{ app.volumes }}
+          </div>
+        </div>
+      </div>
     </template>
     <template v-if="viewMode.grid">
-      <div class="grid justify-items-stretch gap-4 grid-cols-3">
+      <div class="grid justify-items-stretch gap-4 grid-cols-2 md:grid-cols-3">
         <div
           class="relative border border-gray-300 round bg-white shadow p-3 rounded-md h-30"
           v-for="app in filteredList"
