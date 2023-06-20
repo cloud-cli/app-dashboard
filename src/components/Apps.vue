@@ -50,7 +50,7 @@
     <template v-else>
       <div class="flex gap-2 justify-items-stretch">
         <div
-          class="relative border border-gray-300 round w-1/5 bg-white shadow p-2"
+          class="relative border border-gray-300 rounded w-1/5 bg-white shadow p-2"
           v-for="app in filteredList"
           :key="app.name"
         >
@@ -65,9 +65,9 @@
           </div>
 
           <h2 class="text-md font-bold">
-            <route-link :path="'/apps/' + app.name">
+            <router-link :path="'/apps/' + app.name">
               {{ app.name }}
-            </route-link>
+            </router-link>
           </h2>
           <a :href="'https://' + app.host" target="_blank">{{ app.host }}</a>
           <p>{{ app.image }}</p>
