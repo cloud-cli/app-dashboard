@@ -1,15 +1,19 @@
 <template>
   <div class="container mx-auto px-4">
-    <div>
+    <div class="flex">
       <input
         v-model="search"
         type="text"
         placeholder="Filter..."
-        class="px-3 py-2 border rounded w-full mb-4"
+        class="px-3 py-2 border rounded w-full mb-4 flex-grow"
       />
+      <button @click="toggleView()">
+        <span class="material-icons" v-if="viewMode.grid">apps</span>
+        <span class="material-icons" v-if="viewMode.list">table_rows</span>
+      </button>
     </div>
 
-    <template v-if="mode == 'list'">
+    <template v-if="viewMode.list">
       <table class="table-auto w-full">
         <thead class="sr-only">
           <tr>
@@ -47,10 +51,10 @@
         </tbody>
       </table>
     </template>
-    <template v-else>
-      <div class="flex gap-2 justify-items-stretch">
+    <template v-if="viewMode.grid">
+      <div class="grid justify-items-stretch gap-4 grid-cols-3">
         <div
-          class="relative border border-gray-300 rounded w-1/5 bg-white shadow p-2"
+          class="relative border border-gray-300 round bg-white shadow p-3 rounded-md h-30"
           v-for="app in filteredList"
           :key="app.name"
         >
@@ -69,9 +73,13 @@
               {{ app.name }}
             </router-link>
           </h2>
-          <a :href="'https://' + app.host" target="_blank">{{ app.host }}</a>
-          <p>{{ app.image }}</p>
-          <p>{{ app.volumes }}</p>
+          <a
+            class="text-blue-500 underline"
+            :href="'https://' + app.host"
+            target="_blank"
+            >{{ app.host }}</a
+          >
+          <p class="text-gray-400 text-sm">{{ app.image }}</p>
         </div>
       </div>
     </template>
@@ -85,7 +93,15 @@ import { useApps } from "../composables/useApps";
 const { apps, restart } = useApps();
 const restarting = ref({});
 const search = ref("");
-const mode = ref("");
+const showGrid = ref("");
+const viewMode = computed(() => ({
+  grid: showGrid.value,
+  list: !showGrid.value,
+}));
+
+function toggleView() {
+  showGrid.value = !showGrid.value;
+}
 
 const filteredList = computed(() => {
   const filter = unref(search);
