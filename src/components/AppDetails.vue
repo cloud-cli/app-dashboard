@@ -71,7 +71,7 @@
         </div>
       </form>
 
-      <template v-for="(env, index) of envList" :key="env.key">
+      <template v-for="(env, index) of env" :key="env.key">
         <div class="mb-4">
           <span class="block uppercase text-xs font-medium text-gray-700"
             >Key</span
