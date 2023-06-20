@@ -50,7 +50,7 @@
     <template v-else>
       <div class="flex gap-2 justify-items-stretch">
         <div
-          class="relative border border-gray-300 round w-1/5 bg-white shadow"
+          class="relative border border-gray-300 round w-1/5 bg-white shadow p-2"
           v-for="app in filteredList"
           :key="app.name"
         >
