@@ -3,6 +3,7 @@
     <h1 class="text-4xl font-bold mb-4">{{ app.name }}</h1>
 
     <div class="text-right mb-4">
+      <Spinner :visible="loading" class="mr-4" />
       <button
         class="px-2 bg-blue-500 text-white rounded leading-4"
         @click="restartApp()"
@@ -94,10 +95,12 @@
 import { onMounted, ref, unref } from "vue";
 import { commands } from "./composables/useCommands";
 import { useRoute } from "vue-router";
+import Spinner from "./ui/Spinner.vue";
 
 const app = ref(null);
 const env = ref([]);
 const route = useRoute();
+const loading = ref(false);
 
 onMounted(async () => {
   const name = route.params.id;
@@ -112,19 +115,22 @@ function updateEnv(env) {
 }
 
 function updateApp() {
+  loading.value = true;
   commands.dx.update(app.value);
+  loading.value = false;
 }
 
 async function refreshApp() {
   const { name } = unref(app);
+  loading.value = true;
   await commands.dx.refresh({ name });
   await restartApp();
 }
 
 async function restartApp() {
   const { name } = unref(app);
-  unref(restarting)[name] = true;
+  loading.value = true;
   await restart(name);
-  unref(restarting)[name] = false;
+  loading.value = false;
 }
 </script>
