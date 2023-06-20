@@ -1,13 +1,16 @@
 <template>
   <div class="container mx-auto px-4">
-    <div class="flex">
+    <div class="flex mb-4">
       <input
         v-model="search"
         type="text"
         placeholder="Filter..."
-        class="px-3 py-2 border rounded w-full mb-4 flex-grow"
+        class="px-3 py-2 border rounded w-full flex-grow"
       />
-      <button @click="toggleView()">
+      <button
+        @click="toggleView()"
+        class="p-2 bg-gray-300 rounded-sm leading-4"
+      >
         <span class="material-icons" v-if="viewMode.grid">apps</span>
         <span class="material-icons" v-if="viewMode.list">table_rows</span>
       </button>
@@ -69,7 +72,7 @@
           </div>
 
           <h2 class="text-md font-bold">
-            <router-link :path="'/apps/' + app.name">
+            <router-link :to="'/apps/' + app.name">
               {{ app.name }}
             </router-link>
           </h2>
