@@ -71,17 +71,16 @@
         </div>
       </form>
 
-      <template v-for="(env, index) of env" :key="env.key">
-        <div class="mb-4">
+      <div v-for="(env, index) of env" :key="env.key" class="flex gap-2 mb-3">
+        <div class="w-1/3">
           <span class="block uppercase text-xs font-medium text-gray-700"
             >Key</span
           >
-          <span
-            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-            >{{ env.key }}</span
-          >
+          <span class="mt-1 p-2 block w-full rounded-md border bg-gray-100">{{
+            env.key
+          }}</span>
         </div>
-        <div class="mb-4">
+        <div class="flex-grow">
           <label
             :for="'k' + index"
             class="block uppercase text-xs font-medium text-gray-700"
@@ -93,7 +92,26 @@
             class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
           />
         </div>
-      </template>
+      </div>
+
+      <form class="flex" @submit.prevent="addKey()">
+        <div class="flex-grow">
+          <label
+            for="newkey"
+            class="block uppercase text-xs font-medium text-gray-700"
+            >Value</label
+          >
+          <input
+            id="newkey"
+            v-model="newKey"
+            placeholder="New env variable key..."
+            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+          />
+        </div>
+        <button class="p-2 bg-blue-500 text-white rounded leading-4">
+          <span class="material-icons">add_circle</span>
+        </button>
+      </form>
     </template>
   </div>
 </template>
@@ -109,6 +127,7 @@ const app = ref(null);
 const env = ref([]);
 const route = useRoute();
 const loading = ref(false);
+const newKey = ref("");
 
 const props = defineProps({
   name: { type: String, default: "" },
@@ -124,6 +143,16 @@ function updateEnv(env) {
   const { name } = unref(app);
   const { key, value } = env;
   commands.env.set({ key, value, app: name });
+}
+
+function addEnv() {
+  const key = unref(newKey);
+  const { name } = unref(app);
+
+  if (!key) return;
+
+  unref(env).push({ app: name, key, value: "" });
+  newKey.value = "";
 }
 
 function updateApp() {
