@@ -107,7 +107,7 @@
           <label
             for="newkey"
             class="block uppercase text-xs font-medium text-gray-700"
-            >Value</label
+            >Key</label
           >
           <input
             id="newkey"
@@ -117,7 +117,7 @@
           />
         </div>
         <div class="text-right">
-          <button class="py-2 px-4 bg-blue-500 text-white rounded leading-4">
+          <button class="py-2 px-4 bg-blue-500 text-white rounded">
             <span>Add</span>
           </button>
         </div>
