@@ -8,7 +8,7 @@
       <div class="text-right mb-4">
         <Spinner :visible="loading" class="mr-4" />
         <button
-          class="px-2 bg-blue-500 text-white rounded leading-4"
+          class="px-2 bg-blue-500 text-white rounded leading-4 mr-2"
           @click="restartApp()"
         >
           <span class="material-icons">refresh</span>
@@ -97,11 +97,13 @@
             class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
           />
         </div>
-        <button @click="removeEnv(env)"></button>
+        <button @click="removeEnv(env)" class="pt-5">
+          <span class="material-icons">delete</span>
+        </button>
       </div>
 
       <form @submit.prevent="addEnv()">
-        <div>
+        <div class="mb-4">
           <label
             for="newkey"
             class="block uppercase text-xs font-medium text-gray-700"
@@ -115,7 +117,7 @@
           />
         </div>
         <div class="text-right">
-          <button class="p-2 bg-blue-500 text-white rounded leading-4">
+          <button class="py-2 px-4 bg-blue-500 text-white rounded leading-4">
             <span>Add</span>
           </button>
         </div>
@@ -159,15 +161,20 @@ function addEnv() {
 
   if (!key) return;
 
-  unref(env).push({ app: name, key, value: "" });
+  unref(envList).push({ app: name, key, value: "" });
   newKey.value = "";
 }
 
 async function removeEnv(env) {
   const { name } = unref(app);
+
+  if (!confirm("Sure?")) {
+    return;
+  }
+
   await commands.env.remove({ name, key: env.key });
 
-  envList.value = envList.value.filter(next => next.key !== env.key);
+  envList.value = envList.value.filter((next) => next.key !== env.key);
 }
 
 function updateApp() {
