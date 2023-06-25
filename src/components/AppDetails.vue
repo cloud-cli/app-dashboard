@@ -193,7 +193,8 @@ async function refreshApp() {
 async function restartApp() {
   const { name } = unref(app);
   loading.value = true;
-  await restart(name);
+  await commands.dx.stop({ name });
+  await commands.dx.start({ name });
   loading.value = false;
 }
 </script>

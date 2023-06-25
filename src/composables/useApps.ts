@@ -28,13 +28,7 @@ export function useApps() {
     })) as App[];
   }
 
-  const restart = async (name: string) => {
-    const { dx } = unref(commands);
-    await dx.stop({ name });
-    await dx.start({ name });
-  };
-
   onMounted(refresh);
 
-  return { apps, restart };
+  return { apps };
 }
