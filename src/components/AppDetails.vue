@@ -71,7 +71,11 @@
         </div>
       </form>
 
-      <div v-for="(env, index) of env" :key="env.key" class="flex gap-2 mb-3">
+      <div
+        v-for="(env, index) of envList"
+        :key="env.key"
+        class="flex gap-2 mb-3"
+      >
         <div class="w-1/3">
           <span class="block uppercase text-xs font-medium text-gray-700"
             >Key</span
@@ -93,10 +97,11 @@
             class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
           />
         </div>
+        <button @click="removeEnv(env)"></button>
       </div>
 
-      <form class="flex" @submit.prevent="addKey()">
-        <div class="flex-grow">
+      <form @submit.prevent="addEnv()">
+        <div>
           <label
             for="newkey"
             class="block uppercase text-xs font-medium text-gray-700"
@@ -109,9 +114,11 @@
             class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
           />
         </div>
-        <button class="p-2 bg-blue-500 text-white rounded leading-4">
-          <span class="material-icons">add_circle</span>
-        </button>
+        <div class="text-right">
+          <button class="p-2 bg-blue-500 text-white rounded leading-4">
+            <span>Add</span>
+          </button>
+        </div>
       </form>
     </template>
   </div>
@@ -125,7 +132,7 @@ import Spinner from "./ui/Spinner.vue";
 
 const { commands } = useCommands();
 const app = ref(null);
-const env = ref([]);
+const envList = ref([]);
 const route = useRoute();
 const loading = ref(false);
 const newKey = ref("");
@@ -137,7 +144,7 @@ const props = defineProps({
 onMounted(async () => {
   const name = props.name;
   app.value = await commands.dx.get({ name });
-  env.value = await commands.env.show({ name });
+  envList.value = await commands.env.show({ name });
 });
 
 function updateEnv(env) {
@@ -154,6 +161,13 @@ function addEnv() {
 
   unref(env).push({ app: name, key, value: "" });
   newKey.value = "";
+}
+
+async function removeEnv(env) {
+  const { name } = unref(app);
+  await commands.env.remove({ name, key: env.key });
+
+  envList.value = envList.value.filter(next => next.key !== env.key);
 }
 
 function updateApp() {
