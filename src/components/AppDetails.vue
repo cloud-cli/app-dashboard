@@ -6,12 +6,13 @@
       <h1 class="text-4xl font-bold mb-4">{{ app.name }}</h1>
 
       <div class="text-right mb-4">
-        <Spinner :visible="loading" class="mr-4" />
         <button
           class="px-2 bg-blue-500 text-white rounded leading-4 mr-2"
           @click="restartApp()"
         >
-          <span class="material-icons">refresh</span>
+          <span class="material-icons" :class="loading && 'animate-spin'"
+            >refresh</span
+          >
         </button>
         <button
           class="px-2 bg-red-500 text-white rounded leading-4"
@@ -71,6 +72,7 @@
         </div>
       </form>
 
+      <h2 class="text-2xl font-bold mb-4">Environment variables</h2>
       <div
         v-for="(env, index) of envList"
         :key="env.key"
@@ -122,6 +124,19 @@
           </button>
         </div>
       </form>
+
+      <h2 class="text-2xl font-bold mb-4">Logs</h2>
+      <div
+        class="relative p-4 bg-gray-800 text-white font-mono overflow-y-auto whitespace-pre-wrap"
+      >
+        <button
+          @click="updateLogs()"
+          class="absolute top-0 right-0 m-2 bg-gray-800"
+        >
+          <span class="material-icons text-sm text-white">refresh</span>
+        </button>
+        {{ appLogs }}
+      </div>
     </template>
   </div>
 </template>
@@ -138,6 +153,7 @@ const envList = ref([]);
 const route = useRoute();
 const loading = ref(false);
 const newKey = ref("");
+const appLogs = ref("");
 
 const props = defineProps({
   name: { type: String, default: "" },
@@ -168,7 +184,7 @@ function addEnv() {
 async function removeEnv(env) {
   const { name } = unref(app);
 
-  if (!confirm("Sure?")) {
+  if (!confirm("For sure?")) {
     return;
   }
 
@@ -187,7 +203,7 @@ async function refreshApp() {
   const { name } = unref(app);
   loading.value = true;
   await commands.dx.refresh({ name });
-  await restartApp();
+  loading.value = false;
 }
 
 async function restartApp() {
@@ -196,5 +212,10 @@ async function restartApp() {
   await commands.dx.stop({ name });
   await commands.dx.start({ name });
   loading.value = false;
+}
+
+async function updateLogs() {
+  const { name } = unref(app);
+  appLogs.value = await commands.dx.logs({ name });
 }
 </script>
