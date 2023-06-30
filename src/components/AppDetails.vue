@@ -127,7 +127,7 @@
 
       <h2 class="text-2xl font-bold mb-4">Logs</h2>
       <div
-        class="relative p-4 bg-gray-800 text-white font-mono overflow-y-auto whitespace-pre-wrap"
+        class="relative p-4 bg-gray-800 text-white font-mono overflow-y-auto whitespace-pre-wrap rounded-lg"
       >
         <button
           @click="updateLogs()"
@@ -163,6 +163,7 @@ onMounted(async () => {
   const name = props.name;
   app.value = await commands.dx.get({ name });
   envList.value = await commands.env.show({ name });
+  updateLogs();
 });
 
 function updateEnv(env) {
@@ -216,6 +217,6 @@ async function restartApp() {
 
 async function updateLogs() {
   const { name } = unref(app);
-  appLogs.value = await commands.dx.logs({ name }, { text: true });
+  appLogs.value = await commands.dx.logs({ name });
 }
 </script>
