@@ -216,6 +216,6 @@ async function restartApp() {
 
 async function updateLogs() {
   const { name } = unref(app);
-  appLogs.value = await commands.dx.logs({ name });
+  appLogs.value = await commands.dx.logs({ name }, { text: true });
 }
 </script>

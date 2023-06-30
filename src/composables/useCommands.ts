@@ -1,6 +1,16 @@
 import { unref, ref } from "vue";
 import { useSettings } from "./useSettings";
 
+interface CommandOptions {
+  text?: boolean;
+}
+
+interface Command {
+  (args: any, options?: CommandOptions): Promise<any>;
+}
+
+type Commands = Record<string, Record<string, Command>>;
+
 export function useCommands() {
   const help = ref<Record<string, string[]>>({});
   const modules = ref<string[]>([]);
@@ -9,14 +19,15 @@ export function useCommands() {
   const clearError = () => (error.value = "");
   const { apiSecret, apiHost } = useSettings();
 
-  const _commands: any = {};
+  const _commands: Commands = {};
   const commands = new Proxy(_commands, {
     get(_a: any, outer: string) {
       if (!_commands[outer]) {
         const innerProxy = {};
         _commands[outer] = new Proxy(innerProxy, {
           get(_b: any, inner: string) {
-            return (args: any) => run(`${outer}.${inner}`, args);
+            return (args: any, options?: CommandOptions) =>
+              run(`${outer}.${inner}`, args, options);
           },
         });
       }
@@ -47,7 +58,7 @@ export function useCommands() {
     error.value = "Failed to fetch commands: " + response.status;
   }
 
-  async function run(name: string, args: any) {
+  async function run(name: string, args: any, options: CommandOptions = {}) {
     const secret = unref(apiSecret);
 
     if (!secret) {
@@ -63,7 +74,7 @@ export function useCommands() {
     });
 
     if (response.ok) {
-      return response.json();
+      return options.text ? response.text() : response.json();
     }
 
     error.value = await response.text();
@@ -71,7 +82,7 @@ export function useCommands() {
 
   return {
     help,
-    commands,
+    commands: commands as Commands,
     modules,
     error,
     clearError,
