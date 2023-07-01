@@ -127,7 +127,7 @@
 
       <h2 class="text-2xl font-bold mb-4">Logs</h2>
       <div
-        class="relative p-4 bg-gray-800 text-white font-mono overflow-y-auto whitespace-pre-wrap rounded-lg"
+        class="relative p-4 bg-gray-800 text-white font-mono text-sm overflow-y-auto whitespace-pre-wrap rounded-lg"
       >
         <button
           @click="updateLogs()"
@@ -213,6 +213,7 @@ async function restartApp() {
   await commands.dx.stop({ name });
   await commands.dx.start({ name });
   loading.value = false;
+  updateLogs();
 }
 
 async function updateLogs() {
