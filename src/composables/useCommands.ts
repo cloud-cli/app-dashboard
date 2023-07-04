@@ -6,7 +6,7 @@ interface CommandOptions {
 }
 
 interface Command {
-  (args: any, options?: CommandOptions): Promise<any>;
+  (args?: any, options?: CommandOptions): Promise<any>;
 }
 
 type Commands = Record<string, Record<string, Command>>;
@@ -26,7 +26,7 @@ export function useCommands() {
         const innerProxy = {};
         _commands[outer] = new Proxy(innerProxy, {
           get(_b: any, inner: string) {
-            return (args: any, options?: CommandOptions) =>
+            return (args?: any, options?: CommandOptions) =>
               run(`${outer}.${inner}`, args, options);
           },
         });
@@ -58,7 +58,7 @@ export function useCommands() {
     error.value = "Failed to fetch commands: " + response.status;
   }
 
-  async function run(name: string, args: any, options: CommandOptions = {}) {
+  async function run(name: string, args?: any, options: CommandOptions = {}) {
     const secret = unref(apiSecret);
 
     if (!secret) {
