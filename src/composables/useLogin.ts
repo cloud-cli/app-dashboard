@@ -8,8 +8,8 @@ export function useLogin() {
 
   const checkLoginStatus = async () => {
     if (!unref(authHost)) return;
-    
-    const response = await fetch(new URL('/profile', unref(authHost)), {
+
+    const response = await fetch(new URL('/', unref(authHost)), {
       method: 'GET',
       mode: 'cors',
       credentials: 'include',
