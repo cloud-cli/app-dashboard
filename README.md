@@ -1,3 +1,1 @@
-# app-template
-
-Node.js app template
+# Cloudy apps dashboard

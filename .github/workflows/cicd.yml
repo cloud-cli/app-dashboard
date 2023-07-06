@@ -10,4 +10,4 @@ jobs:
       defaultBranch: main
       withSha: false
       withTag: true
-      type: node
+      type: vite

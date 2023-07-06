@@ -1,5 +1,5 @@
-import { unref, ref, onMounted } from 'vue';
-import { useSettings } from './useSettings';
+import { unref, ref, onMounted } from "vue";
+import { useSettings } from "./useSettings";
 
 export function useLogin() {
   const isLoggedIn = ref(false);
@@ -9,10 +9,10 @@ export function useLogin() {
   const checkLoginStatus = async () => {
     if (!unref(authHost)) return;
 
-    const response = await fetch(new URL('/', unref(authHost)), {
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include',
+    const response = await fetch(new URL("/", unref(authHost)), {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
     });
 
     isLoggedIn.value = response.ok && response.status === 200;
@@ -22,10 +22,19 @@ export function useLogin() {
       return;
     }
 
-    location.href = String(new URL('/login?url=' + encodeURIComponent(location.href), unref(authHost)));
+    goToLogin();
   };
+
+  function goToLogin() {
+    location.href = String(
+      new URL(
+        "/login?url=" + encodeURIComponent(location.href),
+        unref(authHost)
+      )
+    );
+  }
 
   onMounted(checkLoginStatus);
 
-  return { isLoggedIn, profile };
+  return { isLoggedIn, goToLogin, profile };
 }
