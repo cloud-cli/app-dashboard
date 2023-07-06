@@ -15,7 +15,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import { useCommands } from '../composables/useCommands';
+import { useCommands } from '../composables/useCommands.js';
 
 const { help, fetchCommands } = useCommands();
 onMounted(fetchCommands);

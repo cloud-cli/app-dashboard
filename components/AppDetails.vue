@@ -143,7 +143,7 @@
 
 <script setup>
 import { onMounted, ref, unref } from "vue";
-import { useCommands } from "../composables/useCommands";
+import { useCommands } from "../composables/useCommands.js";
 import { useRoute } from "vue-router";
 import Spinner from "./ui/Spinner.vue";
 

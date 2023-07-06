@@ -1,4 +1,4 @@
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from './useLocalStorage.js';
 
 export function useSettings() {
   const apiSecret = useLocalStorage('apiSecret', '');

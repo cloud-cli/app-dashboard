@@ -86,10 +86,9 @@
 
 <script setup>
 import { computed, ref, unref } from "vue";
-import { useApps } from "../composables/useApps";
+import { useApps } from "../composables/useApps.js";
 
-const { apps, restart } = useApps();
-const restarting = ref({});
+const { apps } = useApps();
 const search = ref("");
 const showGrid = ref(true);
 const viewMode = computed(() => ({

@@ -1,5 +1,5 @@
 import { unref, ref, onMounted } from "vue";
-import { useSettings } from "./useSettings";
+import { useSettings } from "./useSettings.js";
 
 export function useLogin() {
   const isLoggedIn = ref(false);
