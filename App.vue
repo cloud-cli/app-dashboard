@@ -7,7 +7,7 @@
       <div>
         <span v-if="isLoggedIn"> Hi, {{ profile.displayName }} </span>
         <button
-          v-if="authHost"
+          v-if="authHost && !isLoggedIn"
           class="bg-blue-500 text-sm px-4 py-2"
           @click="goToLogin()"
         >
