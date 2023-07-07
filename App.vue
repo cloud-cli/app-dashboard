@@ -17,7 +17,7 @@
     </div>
 
     <div class="h-screen flex overflow-hidden bg-white">
-      <div class="flex flex-col w-64 border-r border-gray-200 pb-4 bg-white">
+      <div class="flex flex-col md:w-64 border-r border-gray-200 pb-4 bg-white">
         <nav class="mt-5 flex-1 space-y-1">
           <router-link
             v-for="route in enabledRoutes"
@@ -26,7 +26,7 @@
             active-class="text-blue-500 bg-gray-200"
           >
             <span class="material-icons text-base">{{ route.icon }}</span>
-            <span class="text-base">{{ route.name }}</span>
+            <span class="text-base hidden md:block">{{ route.name }}</span>
           </router-link>
         </nav>
       </div>
