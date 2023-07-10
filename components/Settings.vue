@@ -6,7 +6,7 @@
         <label
           for="authHost"
           class="block uppercase text-xs font-medium text-gray-700"
-          >API Host</label
+          >Authentication URL</label
         >
         <input
           id="authHost"
