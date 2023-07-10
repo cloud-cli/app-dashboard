@@ -41,7 +41,7 @@ import { useSettings } from "../composables/useSettings";
 import { useProperty } from "../composables/useProperty";
 
 const { authHost } = useSettings();
-const showSettings = ref(false);
+const showSettings = ref(!!authHost.value);
 const properties = ["apiSecret", "apiHost"];
 
 const settingList = properties.map((key) => {
