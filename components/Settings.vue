@@ -4,13 +4,13 @@
     <form>
       <div class="mb-4">
         <label
-          for="apiHost"
+          for="authHost"
           class="block uppercase text-xs font-medium text-gray-700"
           >API Host</label
         >
         <input
-          id="apiHost"
-          v-model="apiHost"
+          id="authHost"
+          v-model="authHost"
           type="text"
           class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
         />
@@ -43,6 +43,7 @@ import { useProperty } from "../composables/useProperty";
 const { authHost } = useSettings();
 const showSettings = ref(false);
 const properties = ["apiSecret", "apiHost"];
+
 const settingList = properties.map((key) => {
   const value = ref("");
   const label = key.replace(/[A-Z]{1}/g, (c) => " " + c);
