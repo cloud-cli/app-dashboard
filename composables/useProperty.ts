@@ -1,14 +1,17 @@
-import { ref, watch } from "vue";
+import { ref, watch, Ref } from "vue";
 import { useSettings } from "./useSettings";
 
 async function getAuthLibrary(host) {
   return await import(String(new URL("/auth.js", host)));
 }
 
-export function useProperty(property: string) {
+export function useProperty(
+  property: string
+): [Ref<string>, (value: string) => void] {
   const { authHost } = useSettings();
-  const p = ref("");
-  let auth;
+  const p = ref<string>("");
+
+  let auth: any;
 
   const set = (value: string) => {
     console.log("set", property, value);

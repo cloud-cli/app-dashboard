@@ -38,13 +38,13 @@ export function useCommands() {
   });
 
   async function fetchCommands() {
-    const secret = unref(apiSecret);
+    const secret = apiSecret.value;
 
     if (!secret) {
       return;
     }
 
-    const response = await fetch(new URL(".help", unref(apiHost)), {
+    const response = await fetch(new URL(".help", apiHost.value), {
       headers: {
         Authorization: secret,
       },
@@ -60,13 +60,13 @@ export function useCommands() {
   }
 
   async function run(name: string, args?: any, options: CommandOptions = {}) {
-    const secret = unref(apiSecret);
+    const secret = apiSecret.value;
 
     if (!secret) {
       return Promise.reject();
     }
 
-    const response = await fetch(new URL(name, unref(apiHost)), {
+    const response = await fetch(new URL(name, apiHost.value), {
       headers: {
         Authorization: secret,
       },
