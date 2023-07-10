@@ -15,7 +15,7 @@
           class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
         />
       </div>
-      <hr />
+      <hr class="mb-4" />
       <template v-if="showSettings">
         <div class="mb-4" v-for="setting in settingList">
           <label
@@ -25,7 +25,7 @@
           >
           <input
             :id="setting.key"
-            v-model="setting.value"
+            v-model="setting.ref.value"
             type="text"
             class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
           />
@@ -45,19 +45,17 @@ const showSettings = ref(!!authHost.value);
 const properties = ["apiSecret", "apiHost"];
 
 const settingList = properties.map((key) => {
-  const value = ref("");
+  const reference = ref("");
   const label = key.replace(/[A-Z]{1}/g, (c) => " " + c);
   const [_, setProperty] = useProperty(key);
-  watch(value, setProperty);
 
-  return { value, label, key };
+  watch(() => reference.value, setProperty);
+
+  return { ref: reference, label, key };
 });
 
 watch(
   () => authHost.value,
-  (value) => {
-    showSettings.value == !!value;
-    console.log(value);
-  }
+  (value) => showSettings.value == !!value
 );
 </script>

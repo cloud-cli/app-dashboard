@@ -11,6 +11,7 @@ export function useProperty(property: string) {
   let auth;
 
   const set = (value: string) => {
+    console.log("set", property, value);
     auth?.setProperty(property, value);
     p.value = value;
   };
