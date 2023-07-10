@@ -1,5 +1,5 @@
 import { unref, ref } from "vue";
-import { useSettings } from "./useSettings";
+import { useProperty } from "./useProperty";
 
 interface CommandOptions {
   text?: boolean;
@@ -17,7 +17,8 @@ export function useCommands() {
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
   const clearError = () => (error.value = "");
-  const { apiSecret, apiHost } = useSettings();
+  const [apiSecret] = useProperty("apiSecret");
+  const [apiHost] = useProperty("apiHost");
 
   const _commands: Commands = {};
   const commands = new Proxy(_commands, {

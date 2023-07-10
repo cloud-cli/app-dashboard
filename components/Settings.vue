@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { watch } from "fs";
+import { watch } from "vue";
 import { useSettings } from "../composables/useSettings";
 import { useProperty } from "../composables/useProperty";
 
