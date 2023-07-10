@@ -15,40 +15,44 @@
           class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
         />
       </div>
-
-      <div class="mb-4">
-        <label
-          for="apiSecret"
-          class="block uppercase text-xs font-medium text-gray-700"
-          >API Key</label
-        >
-        <input
-          id="apiSecret"
-          v-model="apiSecret"
-          type="text"
-          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-        />
-      </div>
-
-      <div class="mb-4">
-        <label
-          for="authHost"
-          class="block uppercase text-xs font-medium text-gray-700"
-          >Authentication host</label
-        >
-        <input
-          id="authHost"
-          v-model="authHost"
-          type="text"
-          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-        />
-      </div>
+      <hr />
+      <template v-if="showSettings">
+        <div class="mb-4" v-for="setting in settingList">
+          <label
+            :for="setting.key"
+            class="block uppercase text-xs font-medium text-gray-700"
+            >setting.label</label
+          >
+          <input
+            :id="setting.key"
+            v-model="setting.value"
+            type="text"
+            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+          />
+        </div>
+      </template>
     </form>
   </div>
 </template>
 
 <script setup>
+import { watch } from "fs";
 import { useSettings } from "../composables/useSettings";
+import { useProperty } from "../composables/useProperty";
 
-const { apiSecret, apiHost, authHost } = useSettings();
+const { authHost } = useSettings();
+const showSettings = ref(false);
+const properties = ["apiSecret", "apiHost"];
+const settingList = properties.map((key) => {
+  const value = ref("");
+  const label = key.replace(/[A-Z]{1}/g, (c) => " " + c);
+  const [_, setProperty] = useProperty(key);
+  watch(value, setProperty);
+
+  return { value, label, key };
+});
+
+watch(authHost, (value) => {
+  showSettings.value == !!value;
+});
 </script>

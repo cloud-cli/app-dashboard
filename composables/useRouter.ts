@@ -6,10 +6,12 @@ import AppDetails from "../components/AppDetails.vue";
 
 const topPages = [
   {
-    path: "/settings",
-    name: "Settings",
-    icon: "settings",
-    component: Settings,
+    path: "/apps",
+    name: "Apps",
+    icon: "toc",
+    command: "dx",
+    protected: true,
+    component: Apps,
   },
   {
     path: "/help",
@@ -19,12 +21,10 @@ const topPages = [
     component: Help,
   },
   {
-    path: "/apps",
-    name: "Apps",
-    icon: "toc",
-    command: "dx",
-    protected: true,
-    component: Apps,
+    path: "/settings",
+    name: "Settings",
+    icon: "settings",
+    component: Settings,
   },
 ];
 
