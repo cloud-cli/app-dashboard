@@ -25,7 +25,7 @@ export function useProperty(
     }
 
     auth = await getAuthLibrary(host);
-    p.value = auth.getProperty(property);
+    p.value = await auth.getProperty(property);
   }
 
   watch(authHost, loadAuth);
