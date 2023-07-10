@@ -2,7 +2,7 @@ import { ref, watch } from "vue";
 import { useSettings } from "./useSettings";
 
 async function getAuthLibrary(host) {
-  return await import(String(new URL('/auth.js', host)));
+  return await import(String(new URL("/auth.js", host)));
 }
 
 export function useProperty(property: string) {
@@ -10,19 +10,25 @@ export function useProperty(property: string) {
   const p = ref("");
   let auth;
 
-  const set = (value) => {
+  const set = (value: string) => {
     auth?.setProperty(property, value);
     p.value = value;
   };
 
-  watch(authHost, async (value) => {
-    if (!value) {
+  async function loadAuth(host: string) {
+    if (!host) {
       return;
     }
 
-    auth = await getAuthLibrary(value);
+    auth = await getAuthLibrary(host);
     p.value = auth.getProperty(property);
-  });
+  }
+
+  watch(authHost, loadAuth);
+
+  if (authHost.value) {
+    loadAuth(authHost.value);
+  }
 
   return [p, set];
 }
