@@ -21,7 +21,7 @@
           <label
             :for="setting.key"
             class="block uppercase text-xs font-medium text-gray-700"
-            >setting.label</label
+            >{{ setting.label }}</label
           >
           <input
             :id="setting.key"
@@ -53,7 +53,11 @@ const settingList = properties.map((key) => {
   return { value, label, key };
 });
 
-watch(authHost, (value) => {
-  showSettings.value == !!value;
-});
+watch(
+  () => authHost.value,
+  (value) => {
+    showSettings.value == !!value;
+    console.log(value);
+  }
+);
 </script>
