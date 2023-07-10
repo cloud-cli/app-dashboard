@@ -1,8 +1,8 @@
-import { ref, watch } from 'vue';
-import { useSettings } from './useSettings';
+import { ref, watch } from "vue";
+import { useSettings } from "./useSettings";
 
 async function getAuthLibrary(host) {
-  return await import(`https://${host}/auth.js`);
+  return await import(String(new URL('/auth.js', host)));
 }
 
 export function useProperty(property: string) {
