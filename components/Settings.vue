@@ -45,11 +45,15 @@ const showSettings = ref(!!authHost.value);
 const properties = ["apiSecret", "apiHost"];
 
 const settingList = properties.map((key) => {
-  const reference = ref("");
   const label = key.replace(/[A-Z]{1}/g, (c) => " " + c);
-  const [_, setProperty] = useProperty(key);
+  const [current, setProperty] = useProperty(key);
+  const reference = ref(current.value);
 
   watch(() => reference.value, setProperty);
+  watch(
+    () => current.value,
+    (v) => (reference.value = v)
+  );
 
   return { ref: reference, label, key };
 });

@@ -63,7 +63,8 @@ export function useCommands() {
     const secret = apiSecret.value;
 
     if (!secret) {
-      return Promise.reject();
+      console.log("Secret is missing", apiHost.value, apiSecret.value);
+      return Promise.reject(new Error("Secret is missing"));
     }
 
     const response = await fetch(new URL(name, apiHost.value), {
