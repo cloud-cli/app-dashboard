@@ -10,9 +10,9 @@ interface Command {
 }
 
 type Commands = Record<string, Record<string, Command>>;
+const help = ref<Record<string, string[]>>({});
 
 export function useCommands() {
-  const help = ref<Record<string, string[]>>({});
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);

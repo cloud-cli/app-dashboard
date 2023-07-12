@@ -10,10 +10,10 @@ interface App {
   status: "running" | "stopped";
 }
 
+const apps = ref<App[]>([]);
+
 export function useApps() {
   const { commands } = useCommands();
-  const apps = ref<App[]>([]);
-
   const shortenImage = (image: string) => image.replace('ghcr.io/', 'gh:').replace(':latest', '')
 
   async function refresh() {
