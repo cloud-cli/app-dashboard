@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4">
+  <div class="container mx-auto">
     <div
       class="flex p-4 bg-gray-100 border border-0 border-b-1 sticky top-0 z-10 shadow-sm"
     >

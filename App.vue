@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="flex-1 overflow-auto pt-4">
+    <div class="flex-1 overflow-auto">
       <router-view></router-view>
       <Error v-if="error" :error="error.message" />
     </div>
