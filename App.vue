@@ -30,7 +30,7 @@
       </button>
     </div>
 
-    <div class="flex-1 overflow-auto">
+    <div class="flex-1 overflow-y-auto shadow-lg">
       <router-view></router-view>
       <Error v-if="error" :error="error.message" />
     </div>

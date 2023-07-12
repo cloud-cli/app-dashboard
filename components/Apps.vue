@@ -53,7 +53,7 @@
     </div>
     <div
       v-if="showGrid"
-      class="grid justify-items-stretch gap-4 grid-cols-2 md:grid-cols-3 p-4"
+      class="grid justify-items-stretch gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4"
     >
       <div
         class="relative border border-gray-300 round bg-white shadow p-3 rounded-md h-30"
@@ -95,7 +95,6 @@ import { useProperty } from "../composables/useProperty";
 const { apps, refresh } = useApps();
 const search = ref("");
 const [showGrid, setShowGrid] = useProperty("apps:showGrid");
-// useLocalStorage("Apps_viewMode", 1, Number);
 
 function toggleView() {
   setShowGrid(Number(showGrid.value) ? 0 : 1);
