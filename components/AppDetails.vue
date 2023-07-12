@@ -150,7 +150,6 @@ import Spinner from "./ui/Spinner.vue";
 const { commands } = useCommands();
 const app = ref(null);
 const envList = ref([]);
-const route = useRoute();
 const loading = ref(false);
 const newKey = ref("");
 const appLogs = ref("");
