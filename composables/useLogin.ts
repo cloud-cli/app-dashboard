@@ -32,7 +32,7 @@ export function useLogin() {
       credentials: "include",
     });
 
-    return response.ok;
+    isLoggedIn.value = !response.ok;
   }
 
   function goToLogin() {

@@ -6,18 +6,17 @@ async function getAuthLibrary(host) {
 }
 
 const properties: Record<string, Ref<string>> = {};
+type SetProperty = (value: string) => void;
 
-export function useProperty(
-  property: string
-): [Ref<string>, (value: string) => void] {
+export function useProperty(property: string): [Ref<string>, SetProperty] {
   const { authHost } = useSettings();
   const p = properties[property] || (properties[property] = ref<string>(""));
 
   let auth: any;
 
   const set = (value: string) => {
-    auth?.setProperty(property, value);
     p.value = value;
+    auth?.setProperty(location.hostname + ":" + property, value);
   };
 
   async function loadAuth(host: string) {
@@ -26,7 +25,7 @@ export function useProperty(
     }
 
     auth = await getAuthLibrary(host);
-    p.value = await auth.getProperty(property);
+    p.value = await auth.getProperty(location.hostname + ":" + property);
   }
 
   watch(authHost, loadAuth);

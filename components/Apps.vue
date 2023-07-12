@@ -90,14 +90,15 @@
 <script setup>
 import { computed, ref, unref } from "vue";
 import { useApps } from "../composables/useApps";
-import { useLocalStorage } from "../composables/useLocalStorage";
+import { useProperty } from "../composables/useProperty";
 
 const { apps, refresh } = useApps();
 const search = ref("");
-const showGrid = useLocalStorage("Apps_viewMode", 1, Number);
+const [showGrid, setShowGrid] = useProperty("apps:showGrid");
+// useLocalStorage("Apps_viewMode", 1, Number);
 
 function toggleView() {
-  showGrid.value = Number(showGrid.value) ? 0 : 1;
+  setShowGrid(Number(showGrid.value) ? 0 : 1);
 }
 
 const filteredList = computed(() => {
