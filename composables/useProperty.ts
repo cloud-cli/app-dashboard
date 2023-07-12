@@ -5,16 +5,17 @@ async function getAuthLibrary(host) {
   return await import(String(new URL("/auth.js", host)));
 }
 
+const properties: Record<string, Ref<string>> = {};
+
 export function useProperty(
   property: string
 ): [Ref<string>, (value: string) => void] {
   const { authHost } = useSettings();
-  const p = ref<string>("");
+  const p = properties[property] || (properties[property] = ref<string>(""));
 
   let auth: any;
 
   const set = (value: string) => {
-    console.log("set", property, value);
     auth?.setProperty(property, value);
     p.value = value;
   };
@@ -29,7 +30,6 @@ export function useProperty(
   }
 
   watch(authHost, loadAuth);
-
   if (authHost.value) {
     loadAuth(authHost.value);
   }
