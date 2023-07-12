@@ -25,6 +25,16 @@ export function useLogin() {
     goToLogin();
   };
 
+  async function logout() {
+    const response = await fetch(new URL("/", unref(authHost)), {
+      method: "DELETE",
+      mode: "cors",
+      credentials: "include",
+    });
+
+    return response.ok;
+  }
+
   function goToLogin() {
     location.href = String(
       new URL(
@@ -36,5 +46,5 @@ export function useLogin() {
 
   onMounted(checkLoginStatus);
 
-  return { isLoggedIn, goToLogin, profile };
+  return { isLoggedIn, logout, goToLogin, profile };
 }

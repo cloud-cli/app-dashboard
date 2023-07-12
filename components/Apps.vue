@@ -14,6 +14,9 @@
         <span class="material-icons" v-if="viewMode.grid">apps</span>
         <span class="material-icons" v-if="viewMode.list">table_rows</span>
       </button>
+      <button @click="refresh()" class="p-2 bg-white rounded-sm leading-4">
+        <span class="material-icons">refresh</span>
+      </button>
     </div>
 
     <template v-if="viewMode.list">
@@ -88,7 +91,7 @@
 import { computed, ref, unref } from "vue";
 import { useApps } from "../composables/useApps";
 
-const { apps } = useApps();
+const { apps, refresh } = useApps();
 const search = ref("");
 const showGrid = ref(true);
 const viewMode = computed(() => ({

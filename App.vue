@@ -1,19 +1,20 @@
 <template>
-  <div class="h-screen flex flex-col">
-    <div
-      class="z-50 bg-white flex justify-between items-center px-4 py-2 shadow-md"
-    >
-      <h1 class="text-2xl font-bold">Cloudy</h1>
-      <div>
-        <span v-if="isLoggedIn"> Hi, {{ profile.displayName }} </span>
-        <button
-          v-if="authHost && !isLoggedIn"
-          class="bg-blue-500 text-sm px-4 py-2"
-          @click="goToLogin()"
-        >
-          Sign in
-        </button>
-      </div>
+  <div class="relative">
+    <div class="absolute z-50 right-0 top-0">
+      <button
+        v-if="authHost && isLoggedIn"
+        class="bg-gray-300 text-sm px-4 py-2"
+        @click="logout()"
+      >
+        Logout
+      </button>
+      <button
+        v-if="authHost && !isLoggedIn"
+        class="bg-blue-500 text-sm px-4 py-2"
+        @click="goToLogin()"
+      >
+        Sign in
+      </button>
     </div>
 
     <div class="h-screen flex overflow-hidden bg-white">
@@ -47,7 +48,7 @@ import { useCommands } from "./composables/useCommands";
 import { useSettings } from "./composables/useSettings";
 import { useRouter } from "./composables/useRouter";
 
-const { isLoggedIn, profile, goToLogin } = useLogin();
+const { isLoggedIn, logout, goToLogin } = useLogin();
 const { error, fetchCommands } = useCommands();
 const { topPages } = useRouter();
 const { authHost } = useSettings();
@@ -63,12 +64,8 @@ const enabledRoutes = computed(() => {
 });
 
 onMounted(() => {
-  const host = unref(authHost);
-
-  if (!host) {
-    return;
+  if (unref(authHost)) {
+    fetchCommands();
   }
-
-  fetchCommands();
 });
 </script>

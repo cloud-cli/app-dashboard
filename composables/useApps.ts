@@ -30,5 +30,5 @@ export function useApps() {
 
   onMounted(refresh);
 
-  return { apps };
+  return { apps, refresh };
 }
