@@ -94,10 +94,10 @@ import { useLocalStorage } from "../composables/useLocalStorage";
 
 const { apps, refresh } = useApps();
 const search = ref("");
-const showGrid = useLocalStorage("Apps_viewMode", true, (v) => v === "true");
+const showGrid = useLocalStorage("Apps_viewMode", 1, Number);
 
 function toggleView() {
-  showGrid.value = !showGrid.value;
+  showGrid.value = Number(showGrid.value) ? 0 : 1;
 }
 
 const filteredList = computed(() => {
