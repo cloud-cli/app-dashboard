@@ -10,15 +10,15 @@
         class="px-3 py-2 border rounded-l w-full flex-grow"
       />
       <button @click="toggleView()" class="p-2 bg-gray-300 leading-4">
-        <span class="material-icons" v-if="viewMode.grid">apps</span>
-        <span class="material-icons" v-if="viewMode.list">table_rows</span>
+        <span class="material-icons" v-if="showGrid">apps</span>
+        <span class="material-icons" v-if="!showGrid">table_rows</span>
       </button>
       <button @click="refresh()" class="p-2 bg-gray-300 rounded-r leading-4">
         <span class="material-icons">refresh</span>
       </button>
     </div>
 
-    <div v-if="viewMode.list" class="grid gap-1 grid-cols-1 p-4">
+    <div v-if="!showGrid" class="grid gap-0 grid-cols-1 p-4">
       <div
         class="rounded shadow flex p-2"
         v-for="app in filteredList"
@@ -32,8 +32,10 @@
         >
           circle
         </span>
-        <div class="w-1/3">
+        <div class="w-1/4">
           <router-link :to="'/apps/' + app.name">{{ app.name }}</router-link>
+        </div>
+        <div class="w-1/4">
           <a
             class="underline text-blue-500 text-sm ml-4"
             :href="'https://' + app.host"
@@ -41,16 +43,16 @@
             >{{ app.host }}</a
           >
         </div>
-        <div class="text-sm text-gray-500 w-1/3">
+        <div class="text-sm text-gray-500 w-1/4">
           {{ app.image }}
         </div>
-        <div class="text-sm text-gray-500 w-1/3">
+        <div class="text-sm text-gray-500 w-1/4">
           {{ app.volumes }}
         </div>
       </div>
     </div>
     <div
-      v-if="viewMode.grid"
+      v-if="showGrid"
       class="grid justify-items-stretch gap-4 grid-cols-2 md:grid-cols-3 p-4"
     >
       <div
@@ -88,14 +90,11 @@
 <script setup>
 import { computed, ref, unref } from "vue";
 import { useApps } from "../composables/useApps";
+import { useLocalStorage } from "../composables/useLocalStorage";
 
 const { apps, refresh } = useApps();
 const search = ref("");
-const showGrid = ref(true);
-const viewMode = computed(() => ({
-  grid: showGrid.value,
-  list: !showGrid.value,
-}));
+const showGrid = useLocalStorage("Apps_viewMode", true, (v) => v === "true");
 
 function toggleView() {
   showGrid.value = !showGrid.value;
