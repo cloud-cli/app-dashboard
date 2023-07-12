@@ -21,8 +21,6 @@ export function useLogin() {
       profile.value = await response.json();
       return;
     }
-
-    goToLogin();
   };
 
   async function logout() {
