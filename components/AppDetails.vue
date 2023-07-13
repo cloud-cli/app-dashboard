@@ -22,55 +22,7 @@
         </button>
       </div>
 
-      <form @submit.prevent="updateApp()">
-        <div class="mb-4">
-          <label
-            for="image"
-            class="block uppercase text-xs font-medium text-gray-700"
-            >Image</label
-          >
-          <input
-            id="image"
-            v-model="app.image"
-            type="text"
-            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-          />
-        </div>
-        <div class="mb-4">
-          <label
-            for="host"
-            class="block uppercase text-xs font-medium text-gray-700"
-            >Host</label
-          >
-          <input
-            id="host"
-            v-model="app.host"
-            type="text"
-            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-          />
-        </div>
-        <div class="mb-4">
-          <label
-            for="volumes"
-            class="block uppercase text-xs font-medium text-gray-700"
-            >Volumes</label
-          >
-          <input
-            id="volumes"
-            v-model="app.volumes"
-            type="text"
-            class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-          />
-        </div>
-        <div class="text-right">
-          <button
-            type="submit"
-            class="py-2 px-4 bg-blue-500 text-white rounded"
-          >
-            Save
-          </button>
-        </div>
-      </form>
+      <AppForm :app="app" @change="updateApp($event)" />
 
       <h2 class="text-2xl font-bold mb-4">Environment variables</h2>
       <div
@@ -144,7 +96,7 @@
 <script setup>
 import { onMounted, ref, unref } from "vue";
 import { useCommands } from "../composables/useCommands";
-import { useRoute } from "vue-router";
+import AppForm from "./AppForm.vue";
 import Spinner from "./ui/Spinner.vue";
 
 const { commands } = useCommands();
@@ -193,9 +145,9 @@ async function removeEnv(env) {
   envList.value = envList.value.filter((next) => next.key !== env.key);
 }
 
-function updateApp() {
+function updateApp(value) {
   loading.value = true;
-  commands.dx.update(app.value);
+  commands.dx.update(value);
   loading.value = false;
 }
 
