@@ -55,9 +55,9 @@ const props = defineProps({
 });
 
 const emit = defineEmits("change");
-const app = ref({});
+const app = ref(props.app);
 
-watch(props.app, (v) => (app.value = v), { deep: true });
+watch(() => props.app, (v) => (app.value = v), { deep: true });
 
 function onSubmit() {
   app.value && emit("change", { ...app.value });
