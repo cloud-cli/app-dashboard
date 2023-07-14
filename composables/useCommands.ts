@@ -19,9 +19,14 @@ export function useCommands() {
   const clearError = () => (error.value = "");
   const [apiSecret] = useProperty("apiSecret");
   const [apiHost] = useProperty("apiHost");
-  const ready = new Promise(resolve => {
-    watch(apiSecret, (v) => {v && resolve(null)});
-  })
+  const ready = new Promise((resolve) => {
+    watch(
+      () => Boolean(apiSecret.value && apiHost.value),
+      (v) => {
+        v && resolve(null);
+      }
+    );
+  });
 
   const _commands: Commands = {};
   const commands = new Proxy(_commands, {
@@ -66,7 +71,7 @@ export function useCommands() {
     const secret = apiSecret.value;
 
     if (!secret) {
-      console.log("Secret is missing", apiHost.value, apiSecret.value);
+      console.log("Secret is missing", apiHost.value, secret);
       return Promise.reject(new Error("Secret is missing"));
     }
 
