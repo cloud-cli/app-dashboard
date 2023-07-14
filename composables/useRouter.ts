@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Help from "../components/Help.vue";
 import Settings from "../components/Settings.vue";
-import Apps from "../components/Apps.vue";
-import AppDetails from "../components/AppDetails.vue";
+import AppList from "../components/apps/AppList.vue";
+import AppDetails from "../components/apps/AppDetails.vue";
 
 const topPages = [
   {
@@ -11,7 +11,7 @@ const topPages = [
     icon: "toc",
     command: "dx",
     protected: true,
-    component: Apps,
+    component: AppList,
   },
   {
     path: "/help",

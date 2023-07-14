@@ -20,7 +20,7 @@
 
     <div v-if="!showGrid" class="grid gap-0 grid-cols-1 p-4">
       <div
-        class="rounded shadow flex p-2"
+        cl2ass="rounded shadow flex p-2"
         v-for="app in filteredList"
         :key="app.name"
       >
@@ -47,7 +47,7 @@
           {{ app.image }}
         </div>
         <div class="text-sm text-gray-500 w-1/4">
-          {{ app.volumes }}
+          <span class="inline-block p-2" v-for="v of app.volumes">{{ v }}</span>
         </div>
       </div>
     </div>
