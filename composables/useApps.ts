@@ -1,5 +1,6 @@
 import { useCommands } from "./useCommands";
 import { ref, unref, onMounted } from "vue";
+import { useProperty } from './useProperty';
 
 interface App {
   id: number;
@@ -12,11 +13,12 @@ interface App {
 const apps = ref<App[]>([]);
 
 export function useApps() {
-  const { commands } = useCommands();
+  const { commands, ready } = useCommands();
   const shortenImage = (image: string) => image.replace('ghcr.io/', 'gh:').replace(':latest', '')
   const shortenVolumes = (volumes: string): string[] => volumes.split(',').map(volume => volume.split(':')[0]).filter(Boolean)
 
   async function refresh() {
+    await ready;
     const { dx } = unref(commands);
     const list: Array<any> = await dx.list();
     const running: string[] = await dx.ps();
@@ -30,7 +32,7 @@ export function useApps() {
   }
 
   async function addApp(name: string) {
-    if (!name.trim()) return;
+    if (!name?.trim()) return;
 
     const { dx } = unref(commands);
     await dx.add({ name, image: 'none' });

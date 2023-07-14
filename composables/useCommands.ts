@@ -1,4 +1,4 @@
-import { unref, ref } from "vue";
+import { unref, ref, watch } from "vue";
 import { useProperty } from "./useProperty";
 
 interface CommandOptions {
@@ -19,6 +19,9 @@ export function useCommands() {
   const clearError = () => (error.value = "");
   const [apiSecret] = useProperty("apiSecret");
   const [apiHost] = useProperty("apiHost");
+  const ready = new Promise(resolve => {
+    watch(apiSecret, (v) => {v && resolve(null)});
+  })
 
   const _commands: Commands = {};
   const commands = new Proxy(_commands, {
@@ -87,6 +90,7 @@ export function useCommands() {
     commands: commands as Commands,
     modules,
     error,
+    ready,
     clearError,
     hasCommand,
     fetchCommands,

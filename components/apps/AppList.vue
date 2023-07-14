@@ -105,7 +105,7 @@ import { useProperty } from "../../composables/useProperty";
 
 const { apps, refresh, addApp } = useApps();
 const search = ref("");
-const [showGrid, setShowGrid] = useProperty("apps:showGrid");
+const [showGrid, setShowGrid] = useProperty("showGrid");
 
 function toggleView() {
   setShowGrid(Number(showGrid.value) ? 0 : 1);
