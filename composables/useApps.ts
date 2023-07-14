@@ -29,7 +29,15 @@ export function useApps() {
     })) as App[];
   }
 
+  async function addApp(name: string) {
+    if (!name.trim()) return;
+
+    const { dx } = unref(commands);
+    await dx.add({ name, image: 'none' });
+    await refresh();
+  }
+
   onMounted(refresh);
 
-  return { apps, refresh };
+  return { apps, refresh, addApp };
 }

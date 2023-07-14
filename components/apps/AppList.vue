@@ -13,8 +13,12 @@
         <span class="material-icons" v-if="showGrid">apps</span>
         <span class="material-icons" v-if="!showGrid">table_rows</span>
       </button>
-      <button @click="refresh()" class="p-2 bg-gray-300 rounded-r leading-4">
+      <button @click="refresh()" class="p-2 bg-gray-300 leading-4">
         <span class="material-icons">refresh</span>
+      </button>
+      <span class="border-l border-gray-400 mx-2 my-1"></span>
+      <button @click="addAppPrompt()" class="p-2 bg-blue-500 text-white rounded-r leading-4">
+        <span class="material-icons">add_box</span>
       </button>
     </div>
 
@@ -92,7 +96,7 @@ import { computed, ref, unref } from "vue";
 import { useApps } from "../../composables/useApps";
 import { useProperty } from "../../composables/useProperty";
 
-const { apps, refresh } = useApps();
+const { apps, refresh, addApp } = useApps();
 const search = ref("");
 const [showGrid, setShowGrid] = useProperty("apps:showGrid");
 
@@ -110,4 +114,9 @@ const filteredList = computed(() => {
 
   return list.filter((app) => app.name.includes(filter));
 });
+
+function addAppPrompt() {
+  const name = prompt('App name', '');
+  addApp(name);
+}
 </script>
