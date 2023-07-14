@@ -31,6 +31,7 @@
           />
         </div>
       </template>
+      <div v-if="authHost && !isLoggedIn"><a href="#" @click.prevent="goToLogin()">Log in</a> to see app settings.</div>
     </form>
   </div>
 </template>
@@ -39,11 +40,10 @@
 import { watch, ref } from "vue";
 import { useSettings } from "../composables/useSettings";
 import { useProperty } from "../composables/useProperty";
-import { useLogin } from "../composables/useLogin";
+import { useLogin, goToLogin } from "../composables/useLogin";
 
 const { authHost } = useSettings();
 const { isLoggedIn } = useLogin();
-const showSettings = ref(!!authHost.value);
 const properties = ["apiSecret", "apiHost"];
 
 const settingList = properties.map((key) => {
@@ -60,8 +60,5 @@ const settingList = properties.map((key) => {
   return { ref: reference, label, key };
 });
 
-watch(
-  () => authHost.value && isLoggedIn.value,
-  (value) => showSettings.value == !!value
-);
+const showSettings = computed(() => authHost.value && isLoggedIn.value);
 </script>
