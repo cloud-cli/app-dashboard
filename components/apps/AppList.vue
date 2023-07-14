@@ -20,12 +20,12 @@
 
     <div v-if="!showGrid" class="grid gap-0 grid-cols-1 p-4">
       <div
-        cl2ass="rounded shadow flex p-2"
+        class="rounded shadow flex p-2 items-center"
         v-for="app in filteredList"
         :key="app.name"
       >
         <span
-          class="material-icons text-sm mr-2 mt-1"
+          class="material-icons text-sm mr-2"
           :class="[
             app.status === 'running' ? 'text-green-500' : 'text-red-500',
           ]"
@@ -47,7 +47,7 @@
           {{ app.image }}
         </div>
         <div class="text-sm text-gray-500 w-1/4">
-          <span class="inline-block p-2" v-for="v of app.volumes">{{ v }}</span>
+          <span class="inline-block px-1 mr-1 bg-gray-100" v-for="v of app.volumes">{{ v }}</span>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
           target="_blank"
           >{{ app.host }}</a
         >
-        <p class="text-gray-400 text-sm">{{ app.image }}</p>
+        <p class="text-gray-400 text-sm border">{{ app.image }}</p>
       </div>
     </div>
   </div>
