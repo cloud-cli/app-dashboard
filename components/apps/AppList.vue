@@ -89,8 +89,8 @@
 
 <script setup>
 import { computed, ref, unref } from "vue";
-import { useApps } from "../composables/useApps";
-import { useProperty } from "../composables/useProperty";
+import { useApps } from "../../composables/useApps";
+import { useProperty } from "../../composables/useProperty";
 
 const { apps, refresh } = useApps();
 const search = ref("");
