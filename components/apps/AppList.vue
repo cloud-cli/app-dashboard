@@ -13,11 +13,14 @@
         <span class="material-icons" v-if="showGrid">apps</span>
         <span class="material-icons" v-if="!showGrid">table_rows</span>
       </button>
-      <button @click="refresh()" class="p-2 bg-gray-300 leading-4">
+      <button @click="refresh()" class="p-2 bg-gray-300 leading-4 rounded-r">
         <span class="material-icons">refresh</span>
       </button>
       <span class="border-l border-gray-400 mx-2 my-1"></span>
-      <button @click="addAppPrompt()" class="p-2 bg-blue-500 text-white rounded-r leading-4">
+      <button
+        @click="addAppPrompt()"
+        class="p-2 bg-blue-500 text-white rounded leading-4"
+      >
         <span class="material-icons">add_box</span>
       </button>
     </div>
@@ -51,7 +54,11 @@
           {{ app.image }}
         </div>
         <div class="text-sm text-gray-500 w-1/4">
-          <span class="inline-block px-1 mr-1 bg-gray-100" v-for="v of app.volumes">{{ v }}</span>
+          <span
+            class="inline-block px-1 mr-1 bg-gray-100"
+            v-for="v of app.volumes"
+            >{{ v }}</span
+          >
         </div>
       </div>
     </div>
@@ -116,7 +123,7 @@ const filteredList = computed(() => {
 });
 
 function addAppPrompt() {
-  const name = prompt('App name', '');
+  const name = prompt("App name", "");
   addApp(name);
 }
 </script>
