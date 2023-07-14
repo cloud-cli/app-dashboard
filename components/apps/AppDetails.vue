@@ -95,9 +95,9 @@
 
 <script setup>
 import { onMounted, ref, unref } from "vue";
-import { useCommands } from "../composables/useCommands";
+import { useCommands } from "../../composables/useCommands";
 import AppForm from "./AppForm.vue";
-import Spinner from "./ui/Spinner.vue";
+import Spinner from "../ui/Spinner.vue";
 
 const { commands } = useCommands();
 const app = ref(null);

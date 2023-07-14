@@ -1,8 +1,9 @@
 import { unref, ref, onMounted } from "vue";
 import { useSettings } from "./useSettings";
 
+const isLoggedIn = ref(false);
+
 export function useLogin() {
-  const isLoggedIn = ref(false);
   const profile = ref({});
   const { authHost } = useSettings();
 

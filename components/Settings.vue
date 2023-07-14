@@ -39,8 +39,10 @@
 import { watch, ref } from "vue";
 import { useSettings } from "../composables/useSettings";
 import { useProperty } from "../composables/useProperty";
+import { useLogin } from "../composables/useLogin";
 
 const { authHost } = useSettings();
+const { isLoggedIn } = useLogin();
 const showSettings = ref(!!authHost.value);
 const properties = ["apiSecret", "apiHost"];
 
@@ -59,7 +61,7 @@ const settingList = properties.map((key) => {
 });
 
 watch(
-  () => authHost.value,
+  () => authHost.value && isLoggedIn.value,
   (value) => showSettings.value == !!value
 );
 </script>
