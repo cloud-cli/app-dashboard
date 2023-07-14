@@ -40,10 +40,10 @@
 import { watch, ref } from "vue";
 import { useSettings } from "../composables/useSettings";
 import { useProperty } from "../composables/useProperty";
-import { useLogin, goToLogin } from "../composables/useLogin";
+import { useLogin } from "../composables/useLogin";
 
 const { authHost } = useSettings();
-const { isLoggedIn } = useLogin();
+const { isLoggedIn, goToLogin } = useLogin();
 const properties = ["apiSecret", "apiHost"];
 
 const settingList = properties.map((key) => {
