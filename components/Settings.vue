@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { watch, ref } from "vue";
+import { watch, ref, computed } from "vue";
 import { useSettings } from "../composables/useSettings";
 import { useProperty } from "../composables/useProperty";
 import { useLogin } from "../composables/useLogin";
