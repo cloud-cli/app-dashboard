@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto" v-if="!loading">
     <div
       class="flex p-4 bg-gray-100 border border-0 border-b-1 sticky top-0 z-10 shadow-sm"
     >
@@ -99,13 +99,19 @@
 </template>
 
 <script setup>
-import { computed, ref, unref } from "vue";
+import { computed, onMounted, ref, unref } from "vue";
 import { useApps } from "../../composables/useApps";
 import { useProperty } from "../../composables/useProperty";
 
-const { apps, refresh, addApp } = useApps();
+const { apps, refresh, addApp, ready } = useApps();
 const search = ref("");
 const [showGrid, setShowGrid] = useProperty("showGrid");
+const loading = ref(true);
+
+onMounted(async () => {
+  await ready;
+  loading.value = false;
+});
 
 function toggleView() {
   setShowGrid(Number(showGrid.value) ? 0 : 1);

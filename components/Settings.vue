@@ -2,8 +2,6 @@
   <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Configure Web Client</h1>
     <form>
-      <Input :model="authHost" label="" />
-      <hr class="mb-4" />
       <template v-if="showSettings">
         <div class="mb-4" v-for="setting in settingList">
           <label

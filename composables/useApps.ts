@@ -41,5 +41,5 @@ export function useApps() {
 
   onMounted(refresh);
 
-  return { apps, refresh, addApp };
+  return { apps, refresh, addApp, ready };
 }
