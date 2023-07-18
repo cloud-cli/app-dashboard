@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { unref, computed } from "vue";
+import { ref, computed } from "vue";
 import Error from "./components/ui/Error.vue";
 import Spinner from "./components/ui/Spinner.vue";
 import { useAuth } from "./composables/useAuth";
@@ -67,7 +67,7 @@ const enabledRoutes = computed(() => {
 const loading = ref(true);
 
 ready.then(() => {
-  if (unref(authHost)) {
+  if (authHost.value) {
     fetchCommands();
   }
 
