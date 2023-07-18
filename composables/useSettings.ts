@@ -1,7 +1,13 @@
-import { useLocalStorage } from "./useLocalStorage.js";
+import { ref } from "vue";
 
 export function useSettings() {
-  const authHost = useLocalStorage("authHost", "");
+  const authHost = ref("");
+  const ready = new Promise(async (done) => {
+    const r = await fetch("/.env");
+    const env = await r.json();
+    authHost.value = env.AUTH_HOST;
+    done(env);
+  });
 
-  return { authHost };
+  return { authHost, ready };
 }

@@ -1,37 +1,23 @@
-import { ref, watch, Ref } from "vue";
-import { useSettings } from "./useSettings";
-
-async function getAuthLibrary(host) {
-  return await import(String(new URL("/auth.js", host)));
-}
+import { ref, Ref } from "vue";
+import { useAuth } from "./useAuth";
 
 const properties: Record<string, Ref<string>> = {};
 type SetProperty = (value: string) => void;
 
 export function useProperty(property: string): [Ref<string>, SetProperty] {
-  const { authHost } = useSettings();
+  const { ready, auth } = useAuth();
   const p = properties[property] || (properties[property] = ref<string>(""));
-
-  let auth: any;
 
   const set = (value: string) => {
     p.value = value;
-    auth?.setProperty(location.hostname + ":" + property, value);
+    auth.value?.setProperty(location.hostname + ":" + property, value);
   };
 
-  async function loadAuth(host: string) {
-    if (!host) {
-      return;
-    }
-
-    auth = await getAuthLibrary(host);
-    p.value = await auth.getProperty(location.hostname + ":" + property);
+  async function loadAuth() {
+    p.value = await auth.value?.getProperty(location.hostname + ":" + property);
   }
 
-  watch(authHost, loadAuth);
-  if (authHost.value) {
-    loadAuth(authHost.value);
-  }
+  ready.then(loadAuth);
 
   return [p, set];
 }
