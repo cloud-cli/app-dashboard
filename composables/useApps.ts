@@ -18,7 +18,6 @@ export function useApps() {
   const shortenVolumes = (volumes: string): string[] => volumes.split(',').map(volume => volume.split(':')[0]).filter(Boolean)
 
   async function refresh() {
-    await ready;
     const { dx } = unref(commands);
     const list: Array<any> = await dx.list();
     const running: string[] = await dx.ps();
@@ -39,7 +38,7 @@ export function useApps() {
     await refresh();
   }
 
-  onMounted(refresh);
+  ready.then(refresh);
 
   return { apps, refresh, addApp, ready };
 }
