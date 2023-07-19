@@ -2,15 +2,15 @@ import { ref } from "vue";
 import { useEnv } from "./useEnv";
 
 const isLoggedIn = ref(false);
+const auth: any = ref(null);
 
 async function getAuthLibrary(host) {
   return await import(String(new URL("/auth.js", host)));
 }
 
-export async function useAuth() {
+export function useAuth() {
+  const { env, ready } = useEnv();
   const profile = ref(null);
-  const env = await useEnv();
-  const auth = await getAuthLibrary(env.authHost);
 
   async function refresh() {
     try {
@@ -30,7 +30,16 @@ export async function useAuth() {
     }
   }
 
-  refresh();
+  async function signIn() {
+    return auth.value.signIn();
+  }
 
-  return { isLoggedIn, signOut, signIn: auth.signIn, refresh, profile, auth };
+  async function init() {
+    auth.value = await getAuthLibrary(env.value.authHost);
+    refresh();
+  }
+
+  ready.then(init);
+
+  return { isLoggedIn, signOut, signIn, refresh, profile, auth };
 }

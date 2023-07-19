@@ -5,10 +5,10 @@ const properties: Record<string, Ref<string>> = {};
 type SetProperty = (value: string) => void;
 type RefreshProperty = () => Promise<void>;
 
-export async function usePreference(
+export function usePreference(
   property: string
 ): Promise<[Ref<string>, SetProperty, RefreshProperty]> {
-  const { auth } = await useAuth();
+  const { auth } = useAuth();
   const p = properties[property] || (properties[property] = ref<string>(""));
 
   const set = (value: string) => {

@@ -15,7 +15,7 @@
       <button
         v-if="authHost && isLoggedIn"
         class="bg-gray-100 text-sm px-4 py-2 shadow-md flex items-center mx-auto"
-        @click="logout()"
+        @click="signOut()"
       >
         <span class="material-icons">logout</span>
         <span class="hidden md:inline">Logout</span>
@@ -23,7 +23,7 @@
       <button
         v-if="authHost && !isLoggedIn"
         class="bg-blue-500 text-white text-sm px-4 py-2 shadow-md flex items-center mx-auto"
-        @click="goToLogin()"
+        @click="signIn()"
       >
         <span class="material-icons">person</span>
         <span class="hidden md:inline">Sign in</span>
@@ -38,16 +38,15 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import Error from "./components/ui/Error.vue";
-import Spinner from "./components/ui/Spinner.vue";
 import { useAuth } from "./composables/useAuth";
 import { useCommands } from "./composables/useCommands";
 import { useEnv } from "./composables/useEnv";
 import { useRouter } from "./composables/useRouter";
 
 const { authHost } = await useEnv();
-const { isLoggedIn, logout, goToLogin } = await useAuth();
+const { isLoggedIn, logout, signIn } = await useAuth();
 const { error, fetchCommands } = await useCommands();
 const { topPages } = useRouter();
 

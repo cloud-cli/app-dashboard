@@ -11,8 +11,8 @@ interface App {
 
 const apps = ref<App[]>([]);
 
-export async function useApps() {
-  const { commands } = await useCommands();
+export function useApps() {
+  const { commands } = useCommands();
   const shortenImage = (image: string) =>
     image.replace("ghcr.io/", "gh:").replace(":latest", "");
   const shortenVolumes = (volumes: string): string[] =>

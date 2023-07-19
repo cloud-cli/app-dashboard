@@ -1,11 +1,11 @@
 import { ref } from "vue";
 
 let loader: Promise<any>;
-let env: Record<string, string>;
+let env = ref<Record<string, string>>(null as any);
 
-export async function useEnv() {
+export function useEnv() {
   const ready = new Promise((resolve, reject) => {
-    if (env) {
+    if (env.value) {
       return resolve(env);
     }
 
@@ -17,7 +17,5 @@ export async function useEnv() {
     }
   });
 
-  await ready;
-
-  return env;
+  return { env, ready };
 }

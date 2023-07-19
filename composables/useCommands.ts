@@ -1,5 +1,4 @@
-import { unref, ref, onMounted } from "vue";
-import { useProperty } from "./usePreference";
+import { unref, ref } from "vue";
 import { useEnv } from "./useEnv";
 
 interface CommandOptions {
@@ -13,9 +12,8 @@ interface Command {
 type Commands = Record<string, Record<string, Command>>;
 const help = ref<Record<string, string[]>>({});
 
-export async function useCommands() {
-  const env = await useEnv();
-  const { API_KEY: apiKey = "", API_HOST: apiHost = "" } = env;
+export function useCommands() {
+  const { env } = useEnv();
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
@@ -39,6 +37,8 @@ export async function useCommands() {
   });
 
   async function fetchCommands() {
+    const { API_KEY: apiKey = "", API_HOST: apiHost = "" } = env.value;
+
     if (!apiKey) {
       return;
     }
@@ -59,6 +59,8 @@ export async function useCommands() {
   }
 
   async function run(name: string, args?: any, options: CommandOptions = {}) {
+    const { API_KEY: apiKey = "", API_HOST: apiHost = "" } = env.value;
+
     if (!apiKey) {
       console.log("Secret is missing", apiHost, apiKey);
       return Promise.reject(new Error("Secret is missing"));
@@ -78,8 +80,6 @@ export async function useCommands() {
 
     error.value = await response.text();
   }
-
-  onMounted(fetchCommands);
 
   return {
     help,
