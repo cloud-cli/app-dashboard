@@ -42,12 +42,10 @@ import { computed } from "vue";
 import Error from "./components/ui/Error.vue";
 import { useAuth } from "./composables/useAuth";
 import { useCommands } from "./composables/useCommands";
-import { useEnv } from "./composables/useEnv";
 import { useRouter } from "./composables/useRouter";
 
-const { authHost } = await useEnv();
-const { isLoggedIn, logout, signIn } = await useAuth();
-const { error, fetchCommands } = await useCommands();
+const { isLoggedIn, signOut, signIn } = useAuth();
+const { error, fetchCommands } = useCommands();
 const { topPages } = useRouter();
 
 const enabledRoutes = computed(() => {
