@@ -29,11 +29,11 @@
 
 <script setup>
 import { watch, ref, computed } from "vue";
-import { useSettings } from "../composables/useSettings";
+import { useEnv } from "../composables/useEnv";
 import { useProperty } from "../composables/useProperty";
 import { useAuth } from "../composables/useAuth";
 
-const { authHost } = useSettings();
+const { authHost } = useEnv();
 const { isLoggedIn, goToLogin } = useAuth();
 const properties = ["apiSecret", "apiHost"];
 const settingList = properties.map((key) => {

@@ -46,13 +46,13 @@ import Error from "./components/ui/Error.vue";
 import Spinner from "./components/ui/Spinner.vue";
 import { useAuth } from "./composables/useAuth";
 import { useCommands } from "./composables/useCommands";
-import { useSettings } from "./composables/useSettings";
+import { useEnv } from "./composables/useEnv";
 import { useRouter } from "./composables/useRouter";
 
 const { isLoggedIn, logout, goToLogin, ready } = useAuth();
 const { error, fetchCommands } = useCommands();
 const { topPages } = useRouter();
-const { authHost } = useSettings();
+const { authHost } = useEnv();
 
 const enabledRoutes = computed(() => {
   const auth = isLoggedIn.value;

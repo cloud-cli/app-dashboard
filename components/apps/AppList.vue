@@ -99,19 +99,16 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, unref } from "vue";
+import { computed, ref, unref } from "vue";
 import { useApps } from "../../composables/useApps";
-import { useProperty } from "../../composables/useProperty";
+import { usePreference } from "../../composables/usePreference";
 
-const { apps, refresh, addApp, ready } = useApps();
 const search = ref("");
-const [showGrid, setShowGrid] = useProperty("showGrid");
 const loading = ref(true);
+const { apps, refresh, addApp } = await useApps();
+const [showGrid, setShowGrid] = usePreference("showGrid");
 
-onMounted(async () => {
-  await ready;
-  loading.value = false;
-});
+loading.value = false;
 
 function toggleView() {
   setShowGrid(Number(showGrid.value) ? 0 : 1);

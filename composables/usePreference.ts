@@ -3,9 +3,12 @@ import { useAuth } from "./useAuth";
 
 const properties: Record<string, Ref<string>> = {};
 type SetProperty = (value: string) => void;
+type RefreshProperty = () => Promise<void>;
 
-export function useProperty(property: string): [Ref<string>, SetProperty] {
-  const { ready, auth } = useAuth();
+export async function usePreference(
+  property: string
+): Promise<[Ref<string>, SetProperty, RefreshProperty]> {
+  const { auth } = await useAuth();
   const p = properties[property] || (properties[property] = ref<string>(""));
 
   const set = (value: string) => {
@@ -13,11 +16,11 @@ export function useProperty(property: string): [Ref<string>, SetProperty] {
     auth.value?.setProperty(location.hostname + ":" + property, value);
   };
 
-  async function loadAuth() {
+  async function refresh() {
     p.value = await auth.value?.getProperty(location.hostname + ":" + property);
   }
 
-  ready.then(loadAuth);
+  refresh();
 
-  return [p, set];
+  return [p, set, refresh];
 }

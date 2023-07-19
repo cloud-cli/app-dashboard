@@ -1,46 +1,36 @@
-import { unref, ref } from "vue";
-import { useSettings } from "./useSettings";
+import { ref } from "vue";
+import { useEnv } from "./useEnv";
 
 const isLoggedIn = ref(false);
-let auth: any = ref(null);
 
 async function getAuthLibrary(host) {
   return await import(String(new URL("/auth.js", host)));
 }
 
-export function useAuth() {
+export async function useAuth() {
   const profile = ref(null);
-  const { authHost, ready: env } = useSettings();
+  const env = await useEnv();
+  const auth = await getAuthLibrary(env.authHost);
 
   async function refresh() {
-    profile.value = await auth.value.getProfile();
-    isLoggedIn.value = !!profile.value;
+    try {
+      profile.value = await auth.value.getProfile();
+      isLoggedIn.value = !!profile.value;
+    } catch {
+      profile.value = null;
+      isLoggedIn.value = false;
+    }
   }
 
-  async function logout() {
-    const response = await fetch(new URL("/", unref(authHost)), {
-      method: "DELETE",
-      mode: "cors",
-      credentials: "include",
-    });
-
-    isLoggedIn.value = !response.ok;
+  async function signOut() {
+    try {
+      await auth.signOut();
+    } finally {
+      isLoggedIn.value = false;
+    }
   }
 
-  function goToLogin() {
-    location.href = String(
-      new URL(
-        "/login?url=" + encodeURIComponent(location.href),
-        unref(authHost)
-      )
-    );
-  }
+  refresh();
 
-  const ready = env.then(async () => {
-    const lib = await getAuthLibrary(authHost.value);
-    auth.value = lib;
-    refresh();
-  });
-
-  return { isLoggedIn, logout, goToLogin, refresh, profile, ready, auth };
+  return { isLoggedIn, signOut, signIn: auth.signIn, refresh, profile, auth };
 }

@@ -1,8 +1,11 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Available Commands</h1>
-    <template v-for="(subcommands, parent) in help"
-      :key="parent">
+  <PageLayout :title="'Available Commands'">
+    <div class="text-right">
+      <button class="p-2 bg-blue-500 rounded" @click="fetchCommands()">
+        <span class="material-icons">refresh</span>
+      </button>
+    </div>
+    <template v-for="(subcommands, parent) in help" :key="parent">
       <div v-if="subcommands.length" class="mb-4">
         <h2 class="text-lg font-semibold mb-2">{{ parent }}</h2>
         <ul class="pl-4">
@@ -10,13 +13,12 @@
         </ul>
       </div>
     </template>
-  </div>
+  </PageLayout>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { useCommands } from '../composables/useCommands';
+import { useCommands } from "../composables/useCommands";
+import PageLayout from "./ui/PageLayout.vue";
 
-const { help, fetchCommands } = useCommands();
-onMounted(fetchCommands);
+const { help, fetchCommands } = await useCommands();
 </script>

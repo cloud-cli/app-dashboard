@@ -1,5 +1,6 @@
-import { unref, ref, watch } from "vue";
-import { useProperty } from "./useProperty";
+import { unref, ref, onMounted } from "vue";
+import { useProperty } from "./usePreference";
+import { useEnv } from "./useEnv";
 
 interface CommandOptions {
   text?: boolean;
@@ -12,21 +13,13 @@ interface Command {
 type Commands = Record<string, Record<string, Command>>;
 const help = ref<Record<string, string[]>>({});
 
-export function useCommands() {
+export async function useCommands() {
+  const env = await useEnv();
+  const { API_KEY: apiKey = "", API_HOST: apiHost = "" } = env;
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
   const clearError = () => (error.value = "");
-  const [apiSecret] = useProperty("apiSecret");
-  const [apiHost] = useProperty("apiHost");
-  const ready = new Promise((resolve) => {
-    watch(
-      () => Boolean(apiSecret.value && apiHost.value),
-      (v) => {
-        v && resolve(null);
-      }
-    );
-  });
 
   const _commands: Commands = {};
   const commands = new Proxy(_commands, {
@@ -46,15 +39,13 @@ export function useCommands() {
   });
 
   async function fetchCommands() {
-    const secret = apiSecret.value;
-
-    if (!secret) {
+    if (!apiKey) {
       return;
     }
 
-    const response = await fetch(new URL(".help", apiHost.value), {
+    const response = await fetch(new URL(".help", apiHost), {
       headers: {
-        Authorization: secret,
+        Authorization: apiKey,
       },
     });
 
@@ -68,16 +59,14 @@ export function useCommands() {
   }
 
   async function run(name: string, args?: any, options: CommandOptions = {}) {
-    const secret = apiSecret.value;
-
-    if (!secret) {
-      console.log("Secret is missing", apiHost.value, secret);
+    if (!apiKey) {
+      console.log("Secret is missing", apiHost, apiKey);
       return Promise.reject(new Error("Secret is missing"));
     }
 
-    const response = await fetch(new URL(name, apiHost.value), {
+    const response = await fetch(new URL(name, apiHost), {
       headers: {
-        Authorization: secret,
+        Authorization: apiKey,
       },
       method: "POST",
       body: args ? JSON.stringify(args) : "{}",
@@ -90,12 +79,13 @@ export function useCommands() {
     error.value = await response.text();
   }
 
+  onMounted(fetchCommands);
+
   return {
     help,
     commands: commands as Commands,
     modules,
     error,
-    ready,
     clearError,
     hasCommand,
     fetchCommands,
