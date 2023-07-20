@@ -1,15 +1,17 @@
 import { ref } from "vue";
 import { useEnv } from "./useEnv";
+import { useQueue } from "./useQueue";
 
 const isLoggedIn = ref(false);
 const auth: any = ref(null);
+const { whenReady, run } = useQueue;
 
 async function getAuthLibrary(host) {
   return await import(String(new URL("/auth.js", host)));
 }
 
 export function useAuth() {
-  const { env, whenReady } = useEnv();
+  const { env, whenReady: envReady } = useEnv();
   const profile = ref(null);
 
   async function refresh() {
@@ -40,9 +42,10 @@ export function useAuth() {
   async function init() {
     auth.value = await getAuthLibrary(env.value.AUTH_HOST);
     refresh();
+    run();
   }
 
-  whenReady(init);
+  envReady(init);
 
   return {
     isLoggedIn,
@@ -52,5 +55,6 @@ export function useAuth() {
     getProperty,
     setProperty,
     profile,
+    whenReady,
   };
 }

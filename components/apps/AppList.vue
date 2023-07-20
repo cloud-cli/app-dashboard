@@ -92,7 +92,7 @@
           target="_blank"
           >{{ app.host }}</a
         >
-        <p class="text-gray-400 text-sm border">{{ app.image }}</p>
+        <p class="text-gray-400 text-sm">{{ app.image }}</p>
       </div>
     </div>
   </div>

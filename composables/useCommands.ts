@@ -1,5 +1,6 @@
 import { unref, ref, watch } from "vue";
-import { useEnv } from "./useEnv";
+import { usePreference } from "./usePreference";
+import { useQueue } from "./useQueue";
 
 interface CommandOptions {
   text?: boolean;
@@ -13,11 +14,13 @@ type Commands = Record<string, Record<string, Command>>;
 const help = ref<Record<string, string[]>>({});
 
 export function useCommands() {
-  const { env, whenReady } = useEnv();
+  const { run: runQueue, whenReady } = useQueue();
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
   const clearError = () => (error.value = "");
+  const [apiHost] = usePreference("apiHost");
+  const [apiKey] = usePreference("apiSecret");
 
   const _commands: Commands = {};
   const commands = new Proxy(_commands, {
@@ -26,8 +29,13 @@ export function useCommands() {
         const innerProxy = {};
         _commands[outer] = new Proxy(innerProxy, {
           get(_b: any, inner: string) {
-            return (args?: any, options?: CommandOptions) =>
-              run(`${outer}.${inner}`, args, options);
+            return (args?: any, options?: CommandOptions) => {
+              return new Promise((resolve, reject) => {
+                whenReady(() =>
+                  run(`${outer}.${inner}`, args, options).then(resolve, reject)
+                );
+              });
+            };
           },
         });
       }
@@ -36,16 +44,20 @@ export function useCommands() {
     },
   });
 
-  async function fetchCommands() {
-    const { API_KEY: apiKey = "", API_HOST: apiHost = "" } = env.value;
-
-    if (!apiKey) {
-      return;
+  const detach = watch(
+    () => apiHost.value + apiKey.value,
+    (v) => {
+      if (v) {
+        runQueue();
+        detach();
+      }
     }
+  );
 
-    const response = await fetch(new URL(".help", apiHost), {
+  async function fetchCommands() {
+    const response = await fetch(new URL(".help", apiHost.value), {
       headers: {
-        Authorization: apiKey,
+        Authorization: apiKey.value,
       },
     });
 
@@ -59,16 +71,14 @@ export function useCommands() {
   }
 
   async function run(name: string, args?: any, options: CommandOptions = {}) {
-    const { API_KEY: apiKey = "", API_HOST: apiHost = "" } = env.value;
-
-    if (!apiKey) {
-      console.log("Secret is missing", apiHost, apiKey);
+    if (!apiKey.value) {
+      console.log("Secret is missing", apiHost.value, apiKey.value);
       return Promise.reject(new Error("Secret is missing"));
     }
 
-    const response = await fetch(new URL(name, apiHost), {
+    const response = await fetch(new URL(name, apiHost.value), {
       headers: {
-        Authorization: apiKey,
+        Authorization: apiKey.value,
       },
       method: "POST",
       body: args ? JSON.stringify(args) : "{}",
