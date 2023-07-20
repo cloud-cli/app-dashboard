@@ -45,7 +45,7 @@ import { useCommands } from "./composables/useCommands";
 import { useRouter } from "./composables/useRouter";
 
 const { isLoggedIn, signOut, signIn } = useAuth();
-const { error, fetchCommands } = useCommands();
+const { error } = useCommands();
 const { topPages } = useRouter();
 
 const enabledRoutes = computed(() => {
@@ -57,6 +57,4 @@ const enabledRoutes = computed(() => {
     return showProtected;
   });
 });
-
-fetchCommands();
 </script>

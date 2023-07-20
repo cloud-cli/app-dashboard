@@ -1,4 +1,4 @@
-import { unref, ref } from "vue";
+import { unref, ref, watch } from "vue";
 import { useEnv } from "./useEnv";
 
 interface CommandOptions {
@@ -81,6 +81,8 @@ export function useCommands() {
     error.value = await response.text();
   }
 
+  watch(env, fetchCommands);
+
   return {
     help,
     commands: commands as Commands,
@@ -88,7 +90,6 @@ export function useCommands() {
     error,
     clearError,
     hasCommand,
-    fetchCommands,
     run,
   };
 }
