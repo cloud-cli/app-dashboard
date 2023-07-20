@@ -41,11 +41,5 @@ export function useAuth() {
 
   ready.then(init);
 
-  const authProxy = new Proxy({}, {
-    get(target, p) {
-      return auth.value[p];
-    }
-  });
-
-  return { isLoggedIn, signOut, signIn, refresh, profile, auth: authProxy };
+  return { isLoggedIn, signOut, signIn, refresh, profile, auth };
 }

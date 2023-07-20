@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex overflow-hidden bg-white">
+  <div class="h-screen flex overflow-hidden bg-white" v-if="ready">
     <div class="flex flex-col md:w-64 border-r border-gray-200 pb-4 bg-white">
       <nav class="pt-2 flex-1 space-y-1">
         <router-link
@@ -38,8 +38,9 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import Error from "./components/ui/Error.vue";
+import { useEnv } from "./composables/useEnv";
 import { useAuth } from "./composables/useAuth";
 import { useCommands } from "./composables/useCommands";
 import { useRouter } from "./composables/useRouter";
@@ -47,6 +48,10 @@ import { useRouter } from "./composables/useRouter";
 const { isLoggedIn, signOut, signIn } = useAuth();
 const { error } = useCommands();
 const { topPages } = useRouter();
+const ready = ref(false);
+const env = useEnv();
+
+env.ready.then(() => (ready.value = true));
 
 const enabledRoutes = computed(() => {
   const auth = isLoggedIn.value;
