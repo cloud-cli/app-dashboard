@@ -4,7 +4,7 @@ import { useQueue } from "./useQueue";
 
 const isLoggedIn = ref(false);
 const auth: any = ref(null);
-const { whenReady, run } = useQueue;
+const { whenReady, run } = useQueue();
 
 async function getAuthLibrary(host) {
   return await import(String(new URL("/auth.js", host)));
