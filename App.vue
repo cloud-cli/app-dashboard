@@ -49,9 +49,9 @@ const { isLoggedIn, signOut, signIn } = useAuth();
 const { error } = useCommands();
 const { topPages } = useRouter();
 const ready = ref(false);
-const env = useEnv();
+const { whenReady } = useEnv();
 
-env.ready.then(() => (ready.value = true));
+whenReady(() => (ready.value = true))
 
 const enabledRoutes = computed(() => {
   const auth = isLoggedIn.value;

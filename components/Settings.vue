@@ -50,5 +50,5 @@ const settingList = properties.map((key) => {
   return { ref: reference, label, key };
 });
 
-const showSettings = computed(() => env.value.AUTH_HOST && isLoggedIn.value);
+const showSettings = computed(() => env.value?.AUTH_HOST && isLoggedIn.value);
 </script>

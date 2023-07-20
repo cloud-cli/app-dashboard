@@ -4,7 +4,7 @@ let loader: Promise<any>;
 let env = ref<Record<string, string>>(null as any);
 
 export function useEnv() {
-  const ready = new Promise((resolve, reject) => {
+  let ready = new Promise((resolve, reject) => {
     if (env.value) {
       return resolve(env);
     }
@@ -17,5 +17,9 @@ export function useEnv() {
     }
   });
 
-  return { env, ready };
+  function whenReady(next) {
+    ready = ready.then(next);
+  }
+
+  return { env, whenReady };
 }

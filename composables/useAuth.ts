@@ -9,7 +9,7 @@ async function getAuthLibrary(host) {
 }
 
 export function useAuth() {
-  const { env, ready } = useEnv();
+  const { env, whenReady } = useEnv();
   const profile = ref(null);
 
   async function refresh() {
@@ -39,7 +39,7 @@ export function useAuth() {
     refresh();
   }
 
-  ready.then(init);
+  whenReady(init);
 
   return { isLoggedIn, signOut, signIn, refresh, profile, auth };
 }
