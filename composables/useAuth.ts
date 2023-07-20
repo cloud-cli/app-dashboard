@@ -34,6 +34,9 @@ export function useAuth() {
     return auth.value.signIn();
   }
 
+  const setProperty = (...args) => auth.value?.setProperty(...args);
+  const getProperty = (...args) => auth.value?.getProperty(...args);
+
   async function init() {
     auth.value = await getAuthLibrary(env.value.AUTH_HOST);
     refresh();
@@ -41,5 +44,13 @@ export function useAuth() {
 
   whenReady(init);
 
-  return { isLoggedIn, signOut, signIn, refresh, profile, auth };
+  return {
+    isLoggedIn,
+    signOut,
+    signIn,
+    refresh,
+    getProperty,
+    setProperty,
+    profile,
+  };
 }

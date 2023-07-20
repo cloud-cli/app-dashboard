@@ -1,5 +1,6 @@
 import { ref, Ref } from "vue";
 import { useAuth } from "./useAuth";
+import { useEnv } from "./useEnv";
 
 const properties: Record<string, Ref<string>> = {};
 type SetProperty = (value: string) => void;
@@ -7,20 +8,21 @@ type RefreshProperty = () => Promise<void>;
 
 export function usePreference(
   property: string
-): Promise<[Ref<string>, SetProperty, RefreshProperty]> {
-  const { auth } = useAuth();
+): [Ref<string>, SetProperty, RefreshProperty] {
+  const { whenReady } = useEnv();
+  const { setProperty, getProperty } = useAuth();
   const p = properties[property] || (properties[property] = ref<string>(""));
 
   const set = (value: string) => {
     p.value = value;
-    auth.value?.setProperty(location.hostname + ":" + property, value);
+    setProperty(location.hostname + ":" + property, value);
   };
 
   async function refresh() {
-    p.value = await auth.value?.getProperty(location.hostname + ":" + property);
+    p.value = await getProperty(location.hostname + ":" + property);
   }
 
-  refresh();
+  whenReady(refresh);
 
   return [p, set, refresh];
 }
