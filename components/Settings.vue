@@ -18,7 +18,7 @@
         </div>
       </template>
       <div v-if="authHost && !isLoggedIn">
-        <a href="#" @click.prevent="goToLogin()" class="text-blue-500 underline"
+        <a href="#" @click.prevent="signIn()" class="text-blue-500 underline"
           >Log in</a
         >
         to see app settings.
@@ -33,8 +33,8 @@ import { useEnv } from "../composables/useEnv";
 import { useProperty } from "../composables/useProperty";
 import { useAuth } from "../composables/useAuth";
 
-const { authHost } = useEnv();
-const { isLoggedIn, goToLogin } = useAuth();
+const { env } = useEnv();
+const { isLoggedIn, signIn } = useAuth();
 const properties = ["apiSecret", "apiHost"];
 const settingList = properties.map((key) => {
   const label = key.replace(/[A-Z]{1}/g, (c) => " " + c);
@@ -50,5 +50,5 @@ const settingList = properties.map((key) => {
   return { ref: reference, label, key };
 });
 
-const showSettings = computed(() => authHost.value && isLoggedIn.value);
+const showSettings = computed(() => env.value.AUTH_HOST && isLoggedIn.value);
 </script>

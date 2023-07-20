@@ -13,7 +13,7 @@ type Commands = Record<string, Record<string, Command>>;
 const help = ref<Record<string, string[]>>({});
 
 export function useCommands() {
-  const { env } = useEnv();
+  const { env, ready } = useEnv();
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
@@ -59,6 +59,7 @@ export function useCommands() {
   }
 
   async function run(name: string, args?: any, options: CommandOptions = {}) {
+    await ready;
     const { API_KEY: apiKey = "", API_HOST: apiHost = "" } = env.value;
 
     if (!apiKey) {
@@ -81,7 +82,7 @@ export function useCommands() {
     error.value = await response.text();
   }
 
-  watch(env, fetchCommands);
+  watch(env, (v) => v && fetchCommands());
 
   return {
     help,

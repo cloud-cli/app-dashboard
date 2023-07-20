@@ -35,11 +35,17 @@ export function useAuth() {
   }
 
   async function init() {
-    auth.value = await getAuthLibrary(env.value.authHost);
+    auth.value = await getAuthLibrary(env.value.AUTH_HOST);
     refresh();
   }
 
   ready.then(init);
 
-  return { isLoggedIn, signOut, signIn, refresh, profile, auth };
+  const authProxy = new Proxy({}, {
+    get(target, p) {
+      return auth.value[p];
+    }
+  });
+
+  return { isLoggedIn, signOut, signIn, refresh, profile, auth: authProxy };
 }
