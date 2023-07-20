@@ -12,7 +12,7 @@ export function useEnv() {
     if (!loader) {
       loader = fetch("/.env")
         .then((r) => r.json())
-        .then((v) => resolve((env = v)))
+        .then((v) => resolve((env.value = v)))
         .catch(reject);
     }
   });
