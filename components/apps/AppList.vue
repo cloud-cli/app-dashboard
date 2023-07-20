@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto" v-if="!loading">
+  <div class="container mx-auto">
     <div
       class="flex p-4 bg-gray-100 border border-0 border-b-1 sticky top-0 z-10 shadow-sm"
     >
@@ -104,11 +104,8 @@ import { useApps } from "../../composables/useApps";
 import { usePreference } from "../../composables/usePreference";
 
 const search = ref("");
-const loading = ref(true);
-const { apps, refresh, addApp } = await useApps();
+const { apps, refresh, addApp } = useApps();
 const [showGrid, setShowGrid] = usePreference("showGrid");
-
-loading.value = false;
 
 function toggleView() {
   setShowGrid(Number(showGrid.value) ? 0 : 1);
