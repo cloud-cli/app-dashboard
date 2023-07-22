@@ -13,7 +13,7 @@
         </router-link>
       </nav>
       <button
-        v-if="authHost && isLoggedIn"
+        v-if="isLoggedIn"
         class="bg-gray-100 text-sm px-4 py-2 shadow-md flex items-center mx-auto"
         @click="signOut()"
       >
@@ -21,7 +21,7 @@
         <span class="hidden md:inline">Logout</span>
       </button>
       <button
-        v-if="authHost && !isLoggedIn"
+        v-if="!isLoggedIn"
         class="bg-blue-500 text-white text-sm px-4 py-2 shadow-md flex items-center mx-auto"
         @click="signIn()"
       >
@@ -51,7 +51,7 @@ const { topPages } = useRouter();
 const ready = ref(false);
 const { whenReady } = useEnv();
 
-whenReady(() => (ready.value = true))
+whenReady(() => (ready.value = true));
 
 const enabledRoutes = computed(() => {
   const auth = isLoggedIn.value;
