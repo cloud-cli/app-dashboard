@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Help from "../components/Help.vue";
-// import Settings from "../components/Settings.vue";
+import Settings from "../components/Settings.vue";
 import AppList from "../components/apps/AppList.vue";
 import AppDetails from "../components/apps/AppDetails.vue";
 
@@ -20,12 +20,12 @@ const topPages = [
     protected: true,
     component: Help,
   },
-  // {
-  //   path: "/settings",
-  //   name: "Settings",
-  //   icon: "settings",
-  //   component: Settings,
-  // },
+  {
+    path: "/settings",
+    name: "Settings",
+    icon: "settings",
+    component: Settings,
+  },
 ];
 
 const routes = [
