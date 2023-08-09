@@ -40,10 +40,10 @@
 <script setup>
 import { computed, ref } from "vue";
 import Error from "./components/ui/Error.vue";
-import { useEnv } from "./composables/useEnv";
-import { useAuth } from "./composables/useAuth";
-import { useCommands } from "./composables/useCommands";
-import { useRouter } from "./composables/useRouter";
+import { useEnv } from "../composables/useEnv";
+import { useAuth } from "../composables/useAuth";
+import { useCommands } from "../composables/useCommands";
+import { useRouter } from "../composables/useRouter";
 
 const { isLoggedIn, signOut, signIn } = useAuth();
 const { error } = useCommands();

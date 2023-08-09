@@ -1,6 +1,5 @@
 import { unref, ref, watch } from "vue";
 import { usePreference } from "./usePreference";
-import { useQueue } from "./useQueue";
 
 interface CommandOptions {
   text?: boolean;
@@ -14,7 +13,6 @@ type Commands = Record<string, Record<string, Command>>;
 const help = ref<Record<string, string[]>>({});
 
 export function useCommands() {
-  const { run: runQueue, whenReady } = useQueue();
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
@@ -31,9 +29,7 @@ export function useCommands() {
           get(_b: any, inner: string) {
             return (args?: any, options?: CommandOptions) => {
               return new Promise((resolve, reject) => {
-                whenReady(() =>
-                  run(`${outer}.${inner}`, args, options).then(resolve, reject)
-                );
+                run(`${outer}.${inner}`, args, options).then(resolve, reject);
               });
             };
           },
@@ -48,7 +44,7 @@ export function useCommands() {
     () => apiHost.value + apiKey.value,
     (v) => {
       if (v) {
-        runQueue();
+        fetchCommands();
         detach();
       }
     }
@@ -90,8 +86,6 @@ export function useCommands() {
 
     error.value = await response.text();
   }
-
-  whenReady(fetchCommands);
 
   return {
     help,
