@@ -1,5 +1,6 @@
 import { unref, ref, watch } from "vue";
 import { usePreference } from "./usePreference";
+import { useEnv } from "./useEnv";
 
 interface CommandOptions {
   text?: boolean;
@@ -13,12 +14,13 @@ type Commands = Record<string, Record<string, Command>>;
 const help = ref<Record<string, string[]>>({});
 
 export function useCommands() {
+  const { env } = useEnv();
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
   const clearError = () => (error.value = "");
-  const [apiHost] = usePreference("apiHost");
-  const [apiKey] = usePreference("apiSecret");
+  const apiHost = env.value.API_HOST;
+  const [apiSecret] = usePreference("apiSecret");
 
   const _commands: Commands = {};
   const commands = new Proxy(_commands, {
@@ -41,7 +43,7 @@ export function useCommands() {
   });
 
   const detach = watch(
-    () => apiHost.value + apiKey.value,
+    () => apiHost + apiSecret.value,
     (v) => {
       if (v) {
         fetchCommands();
@@ -51,9 +53,9 @@ export function useCommands() {
   );
 
   async function fetchCommands() {
-    const response = await fetch(new URL(".help", apiHost.value), {
+    const response = await fetch(new URL(".help", apiHost), {
       headers: {
-        Authorization: apiKey.value,
+        Authorization: apiSecret.value,
       },
     });
 
@@ -67,14 +69,14 @@ export function useCommands() {
   }
 
   async function run(name: string, args?: any, options: CommandOptions = {}) {
-    if (!apiKey.value) {
-      console.log("Secret is missing", apiHost.value, apiKey.value);
+    if (!apiSecret.value) {
+      console.log("Secret is missing", apiHost, apiSecret.value);
       return Promise.reject(new Error("Secret is missing"));
     }
 
-    const response = await fetch(new URL(name, apiHost.value), {
+    const response = await fetch(new URL(name, apiHost), {
       headers: {
-        Authorization: apiKey.value,
+        Authorization: apiSecret.value,
       },
       method: "POST",
       body: args ? JSON.stringify(args) : "{}",

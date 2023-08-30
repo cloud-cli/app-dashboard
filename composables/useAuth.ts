@@ -3,10 +3,6 @@ import { ref, onMounted } from "vue";
 const isLoggedIn = ref(false);
 const auth: any = ref(null);
 
-async function getAuthLibrary(host) {
-  return await import(String(new URL("/auth.js", host)));
-}
-
 export function useAuth() {
   const profile = ref(null);
 
@@ -22,7 +18,7 @@ export function useAuth() {
 
   async function signOut() {
     try {
-      await auth.signOut();
+      await auth.value.signOut();
     } finally {
       isLoggedIn.value = false;
     }
@@ -49,5 +45,5 @@ export function useAuth() {
 }
 
 export async function load(env) {
-  auth.value = await getAuthLibrary(env.AUTH_HOST);
+  auth.value = await import(String(new URL("/auth.js", env.AUTH_HOST)));
 }

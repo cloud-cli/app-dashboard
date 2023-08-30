@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex overflow-hidden bg-white" v-if="ready">
+  <div class="h-screen flex overflow-hidden bg-white">
     <div class="flex flex-col md:w-64 border-r border-gray-200 pb-4 bg-white">
       <nav class="pt-2 flex-1 space-y-1">
         <router-link
@@ -38,28 +38,19 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import Error from "./components/ui/Error.vue";
-import { useEnv } from "../composables/useEnv";
+import { computed } from "vue";
 import { useAuth } from "../composables/useAuth";
 import { useCommands } from "../composables/useCommands";
 import { useRouter } from "../composables/useRouter";
+import Error from "./components/ui/Error.vue";
 
 const { isLoggedIn, signOut, signIn } = useAuth();
 const { error } = useCommands();
 const { topPages } = useRouter();
-const ready = ref(false);
-const { whenReady } = useEnv();
-
-whenReady(() => (ready.value = true));
 
 const enabledRoutes = computed(() => {
   const auth = isLoggedIn.value;
 
-  return topPages.filter((r) => {
-    const showProtected = !r.protected || auth;
-
-    return showProtected;
-  });
+  return topPages.filter((r) => !r.protected || auth);
 });
 </script>

@@ -1,4 +1,4 @@
-import { ref, Ref } from "vue";
+import { ref, Ref, onMounted } from "vue";
 import { useAuth } from "./useAuth";
 
 const properties: Record<string, Ref<string>> = {};
@@ -8,7 +8,7 @@ type RefreshProperty = () => Promise<void>;
 export function usePreference(
   property: string
 ): [Ref<string>, SetProperty, RefreshProperty] {
-  const { setProperty, getProperty, whenReady } = useAuth();
+  const { setProperty, getProperty } = useAuth();
   const p = properties[property] || (properties[property] = ref<string>(""));
 
   const set = (value: string) => {
@@ -20,7 +20,7 @@ export function usePreference(
     p.value = await getProperty(location.hostname + ":" + property);
   }
 
-  whenReady(refresh);
+  onMounted(refresh);
 
   return [p, set, refresh];
 }
