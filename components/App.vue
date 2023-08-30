@@ -42,7 +42,7 @@ import { computed } from "vue";
 import { useAuth } from "../composables/useAuth";
 import { useCommands } from "../composables/useCommands";
 import { useRouter } from "../composables/useRouter";
-import Error from "./components/ui/Error.vue";
+import Error from "./ui/Error.vue";
 
 const { isLoggedIn, signOut, signIn } = useAuth();
 const { error } = useCommands();
