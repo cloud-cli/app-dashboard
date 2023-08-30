@@ -30,15 +30,15 @@
 <script setup>
 import { watch, ref, computed } from "vue";
 import { useEnv } from "../composables/useEnv";
-import { useProperty } from "../composables/useProperty";
+import { usePreference } from "../composables/usePreference";
 import { useAuth } from "../composables/useAuth";
 
 const { env } = useEnv();
 const { isLoggedIn, signIn } = useAuth();
-const properties = ["apiSecret", "apiHost"];
+const properties = ["apiSecret"];
 const settingList = properties.map((key) => {
   const label = key.replace(/[A-Z]{1}/g, (c) => " " + c);
-  const [current, setProperty] = useProperty(key);
+  const [current, setProperty] = usePreference(key);
   const reference = ref(current.value);
 
   watch(() => reference.value, setProperty);
