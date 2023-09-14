@@ -17,7 +17,8 @@ export function usePreference(
   };
 
   async function refresh() {
-    p.value = await getProperty(location.hostname + ":" + property);
+    const prop = await getProperty(location.hostname + ":" + property);
+    p.value = prop.value;
   }
 
   onMounted(refresh);

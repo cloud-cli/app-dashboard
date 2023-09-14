@@ -1,6 +1,7 @@
 import { unref, ref, watch } from "vue";
 import { usePreference } from "./usePreference";
 import { useEnv } from "./useEnv";
+import { useAuth } from "./useAuth";
 
 interface CommandOptions {
   text?: boolean;
@@ -15,6 +16,7 @@ const help = ref<Record<string, string[]>>({});
 
 export function useCommands() {
   const { env } = useEnv();
+  const { isLoggedIn } = useAuth();
   const modules = ref<string[]>([]);
   const error = ref<string>("");
   const hasCommand = (name: string) => unref(modules).includes(name);
@@ -69,8 +71,11 @@ export function useCommands() {
   }
 
   async function run(name: string, args?: any, options: CommandOptions = {}) {
+    if (!isLoggedIn.value) {
+      return Promise.reject(new Error("Log in first"));
+    }
+
     if (!apiSecret.value) {
-      console.log("Secret is missing", apiHost, apiSecret.value);
       return Promise.reject(new Error("Secret is missing"));
     }
 
