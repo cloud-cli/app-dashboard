@@ -20,5 +20,5 @@
 import { useCommands } from "../composables/useCommands";
 import PageLayout from "./ui/PageLayout.vue";
 
-const { help, fetchCommands } = await useCommands();
+const { help, fetchCommands } = useCommands();
 </script>
