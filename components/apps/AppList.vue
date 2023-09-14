@@ -1,9 +1,12 @@
 <template>
   <div class="container mx-auto">
-    <div v-if="!canRunCommands">
+    <div v-if="!canRunCommands" class="p-4">
       Loading...
 
-      <button @click="refresh()" class="px4 py-2 bg-blue-500 leading-4 rounded mx-auto flex">
+      <button
+        @click="refresh()"
+        class="px-4 py-2 bg-gray-200 leading-4 rounded mx-auto flex"
+      >
         <span class="material-icons">refresh</span>
         <span>Reload list</span>
       </button>
