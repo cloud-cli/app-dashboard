@@ -1,4 +1,4 @@
-import { unref, ref, watch } from "vue";
+import { unref, ref, computed } from "vue";
 import { usePreference } from "./usePreference";
 import { useEnv } from "./useEnv";
 import { useAuth } from "./useAuth";
@@ -23,6 +23,7 @@ export function useCommands() {
   const clearError = () => (error.value = "");
   const apiHost = env.value.API_HOST;
   const [apiSecret] = usePreference("apiSecret");
+  const canRunCommands = computed(() => isLoggedIn.value && apiSecret.value);
 
   const _commands: Commands = {};
   const commands = new Proxy(_commands, {
@@ -43,16 +44,6 @@ export function useCommands() {
       return _commands[outer];
     },
   });
-
-  const detach = watch(
-    () => apiHost + apiSecret.value,
-    (v) => {
-      if (v) {
-        fetchCommands();
-        detach();
-      }
-    }
-  );
 
   async function fetchCommands() {
     const response = await fetch(new URL(".help", apiHost), {
@@ -97,10 +88,12 @@ export function useCommands() {
   return {
     help,
     commands: commands as Commands,
+    canRunCommands,
     modules,
     error,
     clearError,
     hasCommand,
+    fetchCommands,
     run,
   };
 }

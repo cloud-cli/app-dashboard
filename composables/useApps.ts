@@ -12,7 +12,7 @@ interface App {
 const apps = ref<App[]>([]);
 
 export function useApps() {
-  const { commands } = useCommands();
+  const { commands, canRunCommands } = useCommands();
   const shortenImage = (image: string) =>
     image.replace("ghcr.io/", "gh:").replace(":latest", "");
   const shortenVolumes = (volumes: string): string[] =>
@@ -22,6 +22,8 @@ export function useApps() {
       .filter(Boolean);
 
   async function refresh() {
+    if (!canRunCommands.value) return;
+
     const { dx } = unref(commands);
     const list: Array<any> = await dx.list();
     const running: string[] = await dx.ps();

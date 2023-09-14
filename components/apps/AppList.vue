@@ -1,5 +1,13 @@
 <template>
   <div class="container mx-auto">
+    <div v-if="!canRunCommands">
+      Loading...
+
+      <button @click="refresh()" class="px4 py-2 bg-blue-500 leading-4 rounded mx-auto flex">
+        <span class="material-icons">refresh</span>
+        <span>Reload list</span>
+      </button>
+    </div>
     <div
       class="flex p-4 bg-gray-100 border border-0 border-b-1 sticky top-0 z-10 shadow-sm"
     >
@@ -101,10 +109,12 @@
 <script setup>
 import { computed, ref, unref } from "vue";
 import { useApps } from "../../composables/useApps";
+import { useCommands } from "../../composables/useCommands";
 import { usePreference } from "../../composables/usePreference";
 
 const search = ref("");
 const { apps, refresh, addApp } = useApps();
+const { canRunCommands } = useCommands();
 const [showGrid, setShowGrid] = usePreference("showGrid");
 
 function toggleView() {
