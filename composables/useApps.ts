@@ -1,5 +1,5 @@
 import { useCommands } from "./useCommands";
-import { ref, unref, onMounted } from "vue";
+import { ref, unref, onMounted, watch } from "vue";
 
 interface App {
   id: number;
@@ -44,7 +44,16 @@ export function useApps() {
     await refresh();
   }
 
-  onMounted(refresh);
+  onMounted(() => {
+    if (canRunCommands.value) {
+      return refresh();
+    }
+
+    const detach = watch(canRunCommands, () => {
+      refresh();
+      detach();
+    });
+  });
 
   return { apps, refresh, addApp };
 }
