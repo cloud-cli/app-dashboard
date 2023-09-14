@@ -46,6 +46,8 @@ export function useCommands() {
   });
 
   async function fetchCommands() {
+    if (!canRunCommands.value) return;
+
     const response = await fetch(new URL(".help", apiHost), {
       headers: {
         Authorization: apiSecret.value,

@@ -1,7 +1,10 @@
 <template>
   <PageLayout :title="'Available Commands'">
     <div class="text-right">
-      <button class="p-2 bg-blue-500 rounded" @click="fetchCommands()">
+      <button
+        class="p-2 bg-gray-300 leading-4 rounded"
+        @click="fetchCommands()"
+      >
         <span class="material-icons">refresh</span>
       </button>
     </div>
@@ -17,8 +20,10 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import { useCommands } from "../composables/useCommands";
 import PageLayout from "./ui/PageLayout.vue";
 
 const { help, fetchCommands } = useCommands();
+onMounted(fetchCommands);
 </script>
