@@ -31,7 +31,6 @@
     </div>
 
     <div class="flex-1 overflow-y-auto shadow-lg">
-      <Error v-if="error" :error="error.message" />
       <router-view></router-view>
     </div>
   </div>
@@ -40,12 +39,9 @@
 <script setup>
 import { computed } from "vue";
 import { useAuth } from "../composables/useAuth";
-import { useCommands } from "../composables/useCommands";
 import { useRouter } from "../composables/useRouter";
-import Error from "./ui/Error.vue";
 
 const { isLoggedIn, signOut, signIn } = useAuth();
-const { error } = useCommands();
 const { topPages } = useRouter();
 
 const enabledRoutes = computed(() => {

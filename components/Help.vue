@@ -8,7 +8,7 @@
         <span class="material-icons">refresh</span>
       </button>
     </div>
-    <template v-for="(subcommands, parent) in help" :key="parent">
+    <template v-for="(subcommands, parent) in commands" :key="parent">
       <div v-if="subcommands.length" class="mb-4">
         <h2 class="text-lg font-semibold mb-2">{{ parent }}</h2>
         <ul class="pl-4">
@@ -20,10 +20,14 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useCommands } from "../composables/useCommands";
 import PageLayout from "./ui/PageLayout.vue";
 
-const { help, fetchCommands } = useCommands();
-onMounted(fetchCommands);
+const commands = ref();
+const { help } = useCommands();
+
+onMounted(async () => {
+  commands.value = await help();
+});
 </script>
