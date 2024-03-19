@@ -52,6 +52,7 @@ export function useCommands() {
       headers: {
         Authorization: apiSecret.value,
       },
+      method: 'POST',
     });
 
     if (response.ok) {
