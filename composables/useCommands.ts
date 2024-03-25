@@ -6,13 +6,12 @@ import { useAuth } from "./useAuth";
 let remote: Promise<any> | null = null;
 let all: any = null;
 
-async function loadRemote(host: string, key: string) {
+async function loadRemote(host: string) {
   const mod = await import(new URL("/index.mjs", host).toString());
   const { auth, run, default: cloud } = mod;
-  remote = new Promise(r => r({ run, cloud }));
+  remote = new Promise(r => r({ run, cloud, auth }));
 
   all = cloud;
-  await auth(key);
 }
 
 export function useCommands() {
@@ -21,6 +20,21 @@ export function useCommands() {
   const { isLoggedIn } = useAuth();
   const [apiSecret] = usePreference("apiSecret");
   const canRunCommands = computed(() => isLoggedIn.value && apiSecret.value);
+
+  async function verify() {
+    if (!remote) {
+      loadRemote(env.value.API_HOST);
+    }
+
+    try {
+      const { auth } = await remote;
+      await auth(apiSecret.value);
+
+      return true
+    } catch {
+      return false;
+    }
+  }
 
   async function run(name: string, args?: any) {
     if (!isLoggedIn.value) {
@@ -32,7 +46,8 @@ export function useCommands() {
     }
 
     if (!remote) {
-      loadRemote(env.value.API_HOST, apiSecret.value);
+      loadRemote(env.value.API_HOST);
+      await verify();
     }
 
     return remote!.then(c => c.run(name, args));
@@ -55,6 +70,7 @@ export function useCommands() {
   return {
     help,
     run,
+    verify,
     canRunCommands,
     commands,
   };
