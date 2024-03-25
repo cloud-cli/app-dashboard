@@ -10,20 +10,18 @@ async function loadRemote(host: string) {
   const mod = await import(new URL("/index.mjs", host).toString());
   const { auth, run, default: cloud } = mod;
   remote = new Promise(r => r({ run, cloud, auth }));
-
   all = cloud;
 }
 
 export function useCommands() {
   const { env } = useEnv();
-
   const { isLoggedIn } = useAuth();
   const [apiSecret] = usePreference("apiSecret");
   const canRunCommands = computed(() => isLoggedIn.value && apiSecret.value);
 
   async function verify() {
     if (!remote) {
-      loadRemote(env.value.API_HOST);
+      await loadRemote(env.value.API_HOST);
     }
 
     try {
@@ -46,7 +44,7 @@ export function useCommands() {
     }
 
     if (!remote) {
-      loadRemote(env.value.API_HOST);
+      await loadRemote(env.value.API_HOST);
       await verify();
     }
 
