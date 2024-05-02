@@ -15,10 +15,16 @@
           >
         </button>
         <button
-          class="px-2 bg-red-500 text-white rounded leading-4"
+          class="px-2 bg-green-500 text-white rounded leading-4"
           @click="refreshApp()"
         >
           <span class="material-icons">cloud_download</span>
+        </button>
+        <button
+          class="px-2 bg-red-500 text-white rounded leading-4"
+          @click="stopApp()"
+        >
+          <span class="material-icons">stop</span>
         </button>
       </div>
 
@@ -165,6 +171,11 @@ async function restartApp() {
   await commands.dx.start({ name });
   loading.value = false;
   updateLogs();
+}
+
+async function stopApp() {
+  const { name } = unref(app);
+  await commands.dx.stop({ name });
 }
 
 async function updateLogs() {

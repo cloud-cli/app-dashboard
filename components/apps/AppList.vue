@@ -125,14 +125,14 @@ function toggleView() {
 }
 
 const filteredList = computed(() => {
-  const filter = unref(search);
+  const filter = unref(search).toLowerCase();
   const list = unref(apps);
 
   if (!filter) {
     return list;
   }
 
-  return list.filter((app) => app.name.includes(filter));
+  return list.filter((app) => app.name.toLowerCase().includes(filter));
 });
 
 function addAppPrompt() {
