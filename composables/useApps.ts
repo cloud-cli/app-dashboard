@@ -12,7 +12,7 @@ interface App {
 const apps = ref<App[]>([]);
 
 export function useApps() {
-  const { commands, canRunCommands } = useCommands();
+  const { commands, canRunCommands, run } = useCommands();
   const shortenImage = (image: string) =>
     image.replace("ghcr.io/", "gh:").replace(":latest", "");
   const shortenVolumes = (volumes: string): string[] =>
@@ -24,9 +24,8 @@ export function useApps() {
   async function refresh() {
     if (!canRunCommands.value) return;
 
-    const { dx } = unref(commands);
-    const list: Array<any> = await dx.list();
-    const running: string[] = await dx.ps();
+    const list: Array<any> = await run('dx.list');
+    const running: string[] = await run('dx.ps');
 
     apps.value = list.map((app) => ({
       ...app,
@@ -39,8 +38,7 @@ export function useApps() {
   async function addApp(name: string) {
     if (!name?.trim()) return;
 
-    const { dx } = unref(commands);
-    await dx.add({ name, image: "none" });
+    await run('dx.add', { name, image: "none" });
     await refresh();
   }
 
