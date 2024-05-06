@@ -149,7 +149,5 @@ async function verifyAndLoad() {
   await refresh();
 }
 
-onMounted(async () => {
-  await refresh();
-});
+onMounted(verifyAndLoad);
 </script>
