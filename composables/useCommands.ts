@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { ref } from "vue";
 import { usePreference } from "./usePreference";
 import { useEnv } from "./useEnv";
 import { useAuth } from "./useAuth";
@@ -7,15 +7,15 @@ let remote: Promise<any> | null = null;
 
 async function loadRemote(host: string) {
   const mod = await import(new URL("/index.mjs", host).toString());
-  const { auth, run, default: cloud } = mod;
-  remote = new Promise(r => r({ run, cloud, auth }));
+  const { auth, run } = mod;
+  remote = new Promise(r => r({ run, auth }));
 }
 
 export function useCommands() {
   const { env } = useEnv();
   const { isLoggedIn } = useAuth();
   const [apiSecret] = usePreference("apiSecret");
-  const canRunCommands = computed(() => isLoggedIn.value && apiSecret.value);
+  const canRunCommands = ref(false);
 
   async function verify() {
     if (!remote) {
@@ -25,9 +25,10 @@ export function useCommands() {
     try {
       const { auth } = await remote;
       await auth(apiSecret.value);
-
+      canRunCommands.value = true;
       return true
     } catch {
+      canRunCommands.value = false;
       return false;
     }
   }
