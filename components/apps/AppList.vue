@@ -6,6 +6,8 @@
       <button
         @click="refresh()"
         class="px-4 py-2 bg-gray-200 leading-4 rounded mx-auto flex"
+        title="Reload list"
+        aria-label="Reload list"
       >
         <span class="material-icons">refresh</span>
         <span>Reload list</span>
@@ -20,11 +22,11 @@
         placeholder="Filter..."
         class="px-3 py-2 border rounded-l w-full flex-grow"
       />
-      <button @click="toggleView()" class="p-2 bg-gray-300 leading-4">
+      <button @click="toggleView()" class="p-2 bg-gray-300 leading-4" title="Toggle views">
         <span class="material-icons" v-if="showGrid">apps</span>
         <span class="material-icons" v-if="!showGrid">table_rows</span>
       </button>
-      <button @click="refresh()" class="p-2 bg-gray-300 leading-4 rounded-r">
+      <button @click="refresh()" class="p-2 bg-gray-300 leading-4 rounded-r" title="Refresh list">
         <span class="material-icons">refresh</span>
       </button>
       <span class="border-l border-gray-400 mx-2 my-1"></span>
@@ -110,14 +112,14 @@
 </template>
 
 <script setup>
-import { computed, ref, unref } from "vue";
+import { computed, ref, unref, onMounted } from "vue";
 import { useApps } from "../../composables/useApps";
 import { useCommands } from "../../composables/useCommands";
 import { usePreference } from "../../composables/usePreference";
 
 const search = ref("");
 const { apps, refresh, addApp } = useApps();
-const { canRunCommands } = useCommands();
+const { canRunCommands, help } = useCommands();
 const [showGrid, setShowGrid] = usePreference("showGrid");
 
 function toggleView() {
@@ -139,4 +141,9 @@ function addAppPrompt() {
   const name = prompt("App name", "");
   addApp(name);
 }
+
+onMounted(async () => {
+  await help();
+  await refresh();
+});
 </script>

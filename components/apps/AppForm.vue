@@ -28,6 +28,19 @@
     </div>
     <div class="mb-4">
       <label
+        for="port"
+        class="block uppercase text-xs font-medium text-gray-700"
+        >Port</label
+      >
+      <input
+        id="port"
+        v-model="app.port"
+        type="text"
+        class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+      />
+    </div>
+    <div class="mb-4">
+      <label
         for="volumes"
         class="block uppercase text-xs font-medium text-gray-700"
         >Volumes</label

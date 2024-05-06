@@ -2,5 +2,14 @@
   "name": "app",
   "private": true,
   "type": "module",
-  "prettier": "@cloud-cli/prettier-config"
+  "prettier": "@cloud-cli/prettier-config",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  },
+  "dependencies": {
+    "vue": "^3.4.26",
+    "vue-router": "^4.3.2"
+  }
 }

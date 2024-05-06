@@ -1,5 +1,5 @@
 <template>
-  <div class="text-red-500">
+  <div class="text-red-500 p-8">
     <p class="font-bold">Unable to start the app!</p>
     <pre>{{ error }}</pre>
   </div>
