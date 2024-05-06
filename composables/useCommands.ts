@@ -4,13 +4,11 @@ import { useEnv } from "./useEnv";
 import { useAuth } from "./useAuth";
 
 let remote: Promise<any> | null = null;
-let all: any = null;
 
 async function loadRemote(host: string) {
   const mod = await import(new URL("/index.mjs", host).toString());
   const { auth, run, default: cloud } = mod;
   remote = new Promise(r => r({ run, cloud, auth }));
-  all = cloud;
 }
 
 export function useCommands() {
@@ -55,21 +53,10 @@ export function useCommands() {
     return run(".help");
   }
 
-  const commands = new Proxy({}, {
-    get(_target, p) {
-      if (all) {
-        return all[p]
-      }
-
-      return null;
-    }
-  });
-
   return {
     help,
     run,
     verify,
     canRunCommands,
-    commands,
   };
 }

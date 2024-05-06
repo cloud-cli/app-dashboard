@@ -119,7 +119,7 @@ import { usePreference } from "../../composables/usePreference";
 
 const search = ref("");
 const { apps, refresh, addApp } = useApps();
-const { canRunCommands, help } = useCommands();
+const { canRunCommands } = useCommands();
 const [showGrid, setShowGrid] = usePreference("showGrid");
 
 function toggleView() {
@@ -143,7 +143,6 @@ function addAppPrompt() {
 }
 
 onMounted(async () => {
-  await help();
   await refresh();
 });
 </script>

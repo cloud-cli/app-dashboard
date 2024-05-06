@@ -1,5 +1,5 @@
 import { useCommands } from "./useCommands";
-import { ref, unref, onMounted, watch } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 interface App {
   id: number;
@@ -12,7 +12,7 @@ interface App {
 const apps = ref<App[]>([]);
 
 export function useApps() {
-  const { commands, canRunCommands, run } = useCommands();
+  const { canRunCommands, run } = useCommands();
   const shortenImage = (image: string) =>
     image.replace("ghcr.io/", "gh:").replace(":latest", "");
   const shortenVolumes = (volumes: string): string[] =>

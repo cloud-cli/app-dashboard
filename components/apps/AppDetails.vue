@@ -105,7 +105,7 @@ import { useCommands } from "../../composables/useCommands";
 import AppForm from "./AppForm.vue";
 import Spinner from "../ui/Spinner.vue";
 
-const { commands } = useCommands();
+const { run } = useCommands();
 const app = ref(null);
 const envList = ref([]);
 const loading = ref(false);
@@ -118,15 +118,15 @@ const props = defineProps({
 
 onMounted(async () => {
   const name = props.name;
-  app.value = await commands.dx.get({ name });
-  envList.value = await commands.env.show({ name });
+  app.value = await run('dx.get', { name });
+  envList.value = await run('env.show', { name });
   updateLogs();
 });
 
 function updateEnv(env) {
   const { name } = unref(app);
   const { key, value } = env;
-  commands.env.set({ key, value, app: name });
+  run('env.set', { key, value, app: name });
 }
 
 function addEnv() {
@@ -146,40 +146,40 @@ async function removeEnv(env) {
     return;
   }
 
-  await commands.env.remove({ name, key: env.key });
+  await run('env.remove', { name, key: env.key });
 
   envList.value = envList.value.filter((next) => next.key !== env.key);
 }
 
 function updateApp(value) {
   loading.value = true;
-  commands.dx.update(value);
+  run('dx.update' ,value);
   loading.value = false;
 }
 
 async function refreshApp() {
   const { name } = unref(app);
   loading.value = true;
-  await commands.dx.refresh({ name });
+  await run('dx.refresh' ,{ name });
   loading.value = false;
 }
 
 async function restartApp() {
   const { name } = unref(app);
   loading.value = true;
-  await commands.dx.stop({ name });
-  await commands.dx.start({ name });
+  await run('dx.stop' ,{ name });
+  await run('dx.start' ,{ name });
   loading.value = false;
   updateLogs();
 }
 
 async function stopApp() {
   const { name } = unref(app);
-  await commands.dx.stop({ name });
+  await run('dx.stop' ,{ name });
 }
 
 async function updateLogs() {
   const { name } = unref(app);
-  appLogs.value = await commands.dx.logs({ name });
+  appLogs.value = await run('dx.logs' ,{ name });
 }
 </script>
