@@ -24,6 +24,7 @@ const topPages = [
     path: "/settings",
     name: "Settings",
     icon: "settings",
+    protected: true,
     component: Settings,
   },
 ];

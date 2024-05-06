@@ -30,7 +30,7 @@
       </nav>
     </div>
 
-    <div class="flex-1 overflow-y-auto shadow-lg">
+    <div class="flex-1 overflow-y-auto shadow-lg" v-if="isLoggedIn">
       <router-view></router-view>
     </div>
   </div>

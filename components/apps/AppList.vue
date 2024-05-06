@@ -4,17 +4,19 @@
       Loading...
 
       <button
-        @click="refresh()"
-        class="px-4 py-2 bg-gray-200 leading-4 rounded mx-auto flex"
+        @click="verify()"
+        class="px-4 py-2 bg-gray-200 leading-4 rounded mx-auto flex items-center"
         title="Reload list"
         aria-label="Reload list"
       >
         <span class="material-icons">refresh</span>
-        <span>Reload list</span>
+        <span class="ml-2">check again</span>
       </button>
     </div>
+
     <div
       class="flex p-4 bg-gray-100 border border-0 border-b-1 sticky top-0 z-10 shadow-sm"
+      v-if="canRunCommands"
     >
       <input
         v-model="search"
@@ -119,7 +121,7 @@ import { usePreference } from "../../composables/usePreference";
 
 const search = ref("");
 const { apps, refresh, addApp } = useApps();
-const { canRunCommands } = useCommands();
+const { canRunCommands, verify } = useCommands();
 const [showGrid, setShowGrid] = usePreference("showGrid");
 
 function toggleView() {

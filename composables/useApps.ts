@@ -13,8 +13,10 @@ const apps = ref<App[]>([]);
 
 export function useApps() {
   const { canRunCommands, run } = useCommands();
+
   const shortenImage = (image: string) =>
     image.replace("ghcr.io/", "gh:").replace(":latest", "");
+
   const shortenVolumes = (volumes: string): string[] =>
     volumes
       .split(",")
@@ -22,8 +24,6 @@ export function useApps() {
       .filter(Boolean);
 
   async function refresh() {
-    if (!canRunCommands.value) return;
-
     const list: Array<any> = await run('dx.list');
     const running: string[] = await run('dx.ps');
 
@@ -43,10 +43,6 @@ export function useApps() {
   }
 
   onMounted(() => {
-    if (canRunCommands.value) {
-      return refresh();
-    }
-
     const detach = watch(canRunCommands, () => {
       refresh();
       detach();
