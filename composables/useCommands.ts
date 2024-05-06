@@ -47,6 +47,8 @@ export function useCommands() {
       await verify();
     }
 
+    canRunCommands.value = true;
+
     return remote!.then(c => c.run(name, args));
   }
 

@@ -4,7 +4,7 @@
       Loading...
 
       <button
-        @click="verify()"
+        @click="verifyAndLoad()"
         class="px-4 py-2 bg-gray-200 leading-4 rounded mx-auto flex items-center"
         title="Reload list"
         aria-label="Reload list"
@@ -142,6 +142,11 @@ const filteredList = computed(() => {
 function addAppPrompt() {
   const name = prompt("App name", "");
   addApp(name);
+}
+
+async function verifyAndLoad() {
+  await verify();
+  await refresh();
 }
 
 onMounted(async () => {
