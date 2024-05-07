@@ -21,7 +21,7 @@
       >
       <input
         id="host"
-        v-model="app.host"
+        v-model="app.domain"
         type="text"
         class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
       />
