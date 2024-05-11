@@ -1,11 +1,11 @@
 <template>
   <PageLayout :title="'Available Commands'">
-    <form class="flex items-center space-x-2" @submit.prevent="onRun()">
+    <form class="flex items-center" @submit.prevent="onRun()">
       <input
-        class="font-mono text-sm flex-grow w-full p-2 block rounded-md border border-gray-300 shadow-sm"
+        class="font-mono text-sm flex-grow w-full p-2 block rounded-l-md border border-gray-300 shadow-sm"
         v-model="commandInput"
       />
-      <button class="p-2 border border-gray-300 shadow-sm">Run</button>
+      <button class="p-2 border border-gray-300 shadow-sm rounded-r-md border-l-0">Run</button>
     </form>
 
     <Logs :logs="logs" class="my-4" />
