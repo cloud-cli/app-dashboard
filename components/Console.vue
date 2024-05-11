@@ -5,7 +5,7 @@
         class="font-mono text-sm flex-grow w-full p-2 block rounded-l-md border border-gray-300 shadow-sm"
         v-model="commandInput"
       />
-      <button class="p-2 border border-gray-300 shadow-sm rounded-r-md border-l-0">Run</button>
+      <button class="p-2 border border-gray-300 shadow-sm rounded-r-md border-l-0 text-sm">Run</button>
     </form>
 
     <Logs :logs="logs" class="my-4" />
@@ -17,6 +17,7 @@
 import { onMounted, ref } from 'vue';
 import { useCommands } from '../composables/useCommands';
 import PageLayout from './ui/PageLayout.vue';
+import Logs from './ui/Logs.vue';
 
 function parseArgs(string: string) {
   const [command, ...parts] = string.split(' ');
@@ -69,7 +70,7 @@ async function onRun() {
   const { args, command } = parseArgs(string);
 
   try {
-    logs.value = await run(command, args);
+    logs.value = JSON.stringify(await run(command, args), null, 2);
     commandInput.value = '';
   } catch (error) {
     logs.value = String(error);

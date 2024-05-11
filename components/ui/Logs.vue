@@ -3,12 +3,14 @@
     <button @click="onUpdate()" class="absolute top-0 right-0 m-2 bg-gray-800">
       <span class="material-icons text-sm text-white">refresh</span>
     </button>
-    {{ logs }}
+    <div class="uppercase text-xs font-medium">{{ title }}</div>
+    <div>{{ logs }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 defineProps({
+  title: { type: String, default: '' },
   logs: String,
 });
 
