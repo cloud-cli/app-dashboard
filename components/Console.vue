@@ -6,8 +6,11 @@
       </button>
 
       <form class="flex items-center" @submit.prevent="onRun()">
-        <input class="font-mono text-sm p-4 flex-grow w-full" v-model="commandInput" />
-        <button class="p-4">Run</button>
+        <input
+          class="font-mono text-sm flex-grow w-full p-2 block rounded-md border border-gray-300 shadow-sm"
+          v-model="commandInput"
+        />
+        <button class="p-2">Run</button>
       </form>
 
       <Logs @update="updateLogs()" :logs="logs" />
