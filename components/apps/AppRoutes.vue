@@ -1,5 +1,5 @@
 <template>
-  <div v-for="(route, index) of routeList" :key="env.domain" class="flex gap-2 mb-3">
+  <div v-for="(route, index) of routeList" :key="route.domain" class="flex gap-2 mb-3">
     <div class="w-1/3">
       <span class="block uppercase text-xs font-medium text-gray-700">Domain</span>
       <span class="mt-1 p-2 block w-full rounded-md border bg-gray-100">{{ route.domain }}</span>
