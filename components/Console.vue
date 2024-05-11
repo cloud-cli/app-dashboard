@@ -8,35 +8,19 @@
       <button class="p-2 border border-gray-300 shadow-sm">Run</button>
     </form>
 
-    <Logs :logs="logs" class="mt-4" />
-
-    <div class="text-right">
-      <button class="p-2 bg-gray-300 leading-4 rounded" @click="fetchCommands()">
-        <span class="material-icons">help</span>
-      </button>
-    </div>
-    <div class="text-sm p-2 mt-4 border border-gray-100">
-      <template v-for="(subcommands, parent) in commands" :key="parent">
-        <div v-if="subcommands.length" class="mb-4">
-          <h2 class="font-semibold mb-1">{{ parent }}</h2>
-          <ul class="pl-4">
-            <li v-for="command in subcommands" :key="command">{{ command }}</li>
-          </ul>
-        </div>
-      </template>
-    </div>
+    <Logs :logs="logs" class="my-4" />
+    <Logs :logs="commands" @update="fetchCommands()" />
   </PageLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useCommands } from '../composables/useCommands';
 import PageLayout from './ui/PageLayout.vue';
-import Spinner from './ui/Logs.vue';
-import minimistString from 'minimist-string';
+import parseArgs from 'yargs';
 
 const commandInput = ref('');
-const commands = ref();
+const commands = ref('');
 const logs = ref('');
 const { help, run } = useCommands();
 
@@ -45,13 +29,32 @@ async function onRun() {
 
   if (!string.trim()) return;
 
-  const { _: cmd, ...args } = minimistString(string);
-  console.log(cmd, args);
-  logs.value = await run(cmd, args);
+  const { argv } = parseArgs(string.split(' '));
+  const { $0, _, ...args } = argv;
+  const [cmd, ...rest] = _;
+  const finalArgs = { ...args, _: rest };
+
+  try {
+    logs.value = await run(cmd, finalArgs);
+    commandInput.value = '';
+  } catch (error) {
+    logs.value = String(error);
+  }
 }
 
 async function fetchCommands() {
-  commands.value = await help();
+  const allCommands: Record<string, string[]> = await help();
+  const tree = Object.entries(allCommands);
+  const text = [];
+
+  for (const [parent, subcommands] of tree) {
+    text.push(
+      parent,
+      subcommands.map((s) => '  ' + s),
+    );
+  }
+
+  commands.value = text.join('\n');
 }
 
 onMounted(() => {
