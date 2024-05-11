@@ -17,7 +17,44 @@
 import { onMounted, ref } from 'vue';
 import { useCommands } from '../composables/useCommands';
 import PageLayout from './ui/PageLayout.vue';
-import parseArgs from 'yargs';
+
+function parseArgs(string: string) {
+  const [command, ...parts] = string.split(' ');
+  const args: any = {};
+  let nextOption = '';
+
+  args._ = [];
+  let parseableParts = parts.slice(0);
+  const start = parts.findIndex((p) => p.startsWith('--'));
+
+  if (start !== -1) {
+    args._ = parts.slice(0, start);
+    parseableParts = parts.slice(start);
+  }
+
+  for (const part of parseableParts) {
+    if (part.startsWith('--')) {
+      if (nextOption) {
+        args[nextOption] = true;
+        nextOption = part.slice(2);
+        continue;
+      }
+
+      nextOption = part.slice(2);
+      continue;
+    }
+
+    if (nextOption) {
+      args[nextOption] = part;
+      nextOption = '';
+      continue;
+    }
+
+    args._.push(part);
+  }
+
+  return { command, args };
+}
 
 const commandInput = ref('');
 const commands = ref('');
@@ -29,13 +66,10 @@ async function onRun() {
 
   if (!string.trim()) return;
 
-  const { argv } = parseArgs(string.split(' '));
-  const { $0, _, ...args } = argv;
-  const [cmd, ...rest] = _;
-  const finalArgs = { ...args, _: rest };
+  const { args, command } = parseArgs(string);
 
   try {
-    logs.value = await run(cmd, finalArgs);
+    logs.value = await run(command, args);
     commandInput.value = '';
   } catch (error) {
     logs.value = String(error);
