@@ -1,4 +1,4 @@
-import { ref, onMounted } from "vue";
+import { ref, onMounted } from 'vue';
 
 const isLoggedIn = ref(false);
 const auth: any = ref(null);
@@ -45,5 +45,5 @@ export function useAuth() {
 }
 
 export async function load(env) {
-  auth.value = await import(String(new URL("/auth.js", env.AUTH_HOST)));
+  auth.value = await import(String(new URL('/auth.js', env.AUTH_HOST)));
 }

@@ -6,24 +6,13 @@
       <h1 class="text-4xl font-bold mb-4">{{ app.name }}</h1>
 
       <div class="text-right mb-4">
-        <button
-          class="px-2 bg-blue-500 text-white rounded leading-4 mr-2"
-          @click="restartApp()"
-        >
-          <span class="material-icons" :class="loading && 'animate-spin'"
-            >refresh</span
-          >
+        <button class="px-2 bg-blue-500 text-white rounded leading-4 mr-2" @click="restartApp()">
+          <span class="material-icons" :class="loading && 'animate-spin'">refresh</span>
         </button>
-        <button
-          class="px-2 bg-green-500 text-white rounded leading-4"
-          @click="refreshApp()"
-        >
+        <button class="px-2 bg-green-500 text-white rounded leading-4" @click="refreshApp()">
           <span class="material-icons">cloud_download</span>
         </button>
-        <button
-          class="px-2 bg-red-500 text-white rounded leading-4"
-          @click="stopApp()"
-        >
+        <button class="px-2 bg-red-500 text-white rounded leading-4" @click="stopApp()">
           <span class="material-icons">stop</span>
         </button>
       </div>
@@ -31,25 +20,13 @@
       <AppForm :app="app" @change="updateApp($event)" />
 
       <h2 class="text-2xl font-bold mb-4">Environment variables</h2>
-      <div
-        v-for="(env, index) of envList"
-        :key="env.key"
-        class="flex gap-2 mb-3"
-      >
+      <div v-for="(env, index) of envList" :key="env.key" class="flex gap-2 mb-3">
         <div class="w-1/3">
-          <span class="block uppercase text-xs font-medium text-gray-700"
-            >Key</span
-          >
-          <span class="mt-1 p-2 block w-full rounded-md border bg-gray-100">{{
-            env.key
-          }}</span>
+          <span class="block uppercase text-xs font-medium text-gray-700">Key</span>
+          <span class="mt-1 p-2 block w-full rounded-md border bg-gray-100">{{ env.key }}</span>
         </div>
         <div class="flex-grow">
-          <label
-            :for="'k' + index"
-            class="block uppercase text-xs font-medium text-gray-700"
-            >Value</label
-          >
+          <label :for="'k' + index" class="block uppercase text-xs font-medium text-gray-700">Value</label>
           <input
             :id="'k' + index"
             v-model="env.value"
@@ -64,11 +41,7 @@
 
       <form @submit.prevent="addEnv()">
         <div class="mb-4">
-          <label
-            for="newkey"
-            class="block uppercase text-xs font-medium text-gray-700"
-            >Key</label
-          >
+          <label for="newkey" class="block uppercase text-xs font-medium text-gray-700">Key</label>
           <input
             id="newkey"
             v-model="newKey"
@@ -84,36 +57,27 @@
       </form>
 
       <h2 class="text-2xl font-bold mb-4">Logs</h2>
-      <div
-        class="relative p-4 bg-gray-800 text-white font-mono text-sm overflow-y-auto whitespace-pre-wrap rounded-lg"
-      >
-        <button
-          @click="updateLogs()"
-          class="absolute top-0 right-0 m-2 bg-gray-800"
-        >
-          <span class="material-icons text-sm text-white">refresh</span>
-        </button>
-        {{ appLogs }}
-      </div>
+      <Logs @update="updateLogs()" :logs="appLogs" />
     </template>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, unref } from "vue";
-import { useCommands } from "../../composables/useCommands";
-import AppForm from "./AppForm.vue";
-import Spinner from "../ui/Spinner.vue";
+import { onMounted, ref, unref } from 'vue';
+import { useCommands } from '../../composables/useCommands';
+import AppForm from './AppForm.vue';
+import Spinner from '../ui/Spinner.vue';
+import Logs from '../ui/Logs.vue';
 
 const { run } = useCommands();
 const app = ref(null);
 const envList = ref([]);
 const loading = ref(false);
-const newKey = ref("");
-const appLogs = ref("");
+const newKey = ref('');
+const appLogs = ref('');
 
 const props = defineProps({
-  name: { type: String, default: "" },
+  name: { type: String, default: '' },
 });
 
 onMounted(async () => {
@@ -135,14 +99,14 @@ function addEnv() {
 
   if (!key) return;
 
-  unref(envList).push({ app: name, key, value: "" });
-  newKey.value = "";
+  unref(envList).push({ app: name, key, value: '' });
+  newKey.value = '';
 }
 
 async function removeEnv(env) {
   const { name } = unref(app);
 
-  if (!confirm("For sure?")) {
+  if (!confirm('For sure?')) {
     return;
   }
 
@@ -153,33 +117,33 @@ async function removeEnv(env) {
 
 function updateApp(value) {
   loading.value = true;
-  run('dx.update' ,value);
+  run('dx.update', value);
   loading.value = false;
 }
 
 async function refreshApp() {
   const { name } = unref(app);
   loading.value = true;
-  await run('dx.refresh' ,{ name });
+  await run('dx.refresh', { name });
   loading.value = false;
 }
 
 async function restartApp() {
   const { name } = unref(app);
   loading.value = true;
-  await run('dx.stop' ,{ name });
-  await run('dx.start' ,{ name });
+  await run('dx.stop', { name });
+  await run('dx.start', { name });
   loading.value = false;
   updateLogs();
 }
 
 async function stopApp() {
   const { name } = unref(app);
-  await run('dx.stop' ,{ name });
+  await run('dx.stop', { name });
 }
 
 async function updateLogs() {
   const { name } = unref(app);
-  appLogs.value = await run('dx.logs' ,{ name });
+  appLogs.value = await run('dx.logs', { name });
 }
 </script>

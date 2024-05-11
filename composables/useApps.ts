@@ -1,12 +1,12 @@
-import { useCommands } from "./useCommands";
-import { ref, onMounted, watch } from "vue";
+import { useCommands } from './useCommands';
+import { ref, onMounted, watch } from 'vue';
 
 interface App {
   id: number;
   name: string;
   image: string;
   volumes: string[];
-  status: "running" | "stopped";
+  status: 'running' | 'stopped';
 }
 
 const apps = ref<App[]>([]);
@@ -14,13 +14,12 @@ const apps = ref<App[]>([]);
 export function useApps() {
   const { canRunCommands, run } = useCommands();
 
-  const shortenImage = (image: string) =>
-    image.replace("ghcr.io/", "gh:").replace(":latest", "");
+  const shortenImage = (image: string) => image.replace('ghcr.io/', 'gh:').replace(':latest', '');
 
   const shortenVolumes = (volumes: string): string[] =>
     volumes
-      .split(",")
-      .map((volume) => volume.split(":")[0])
+      .split(',')
+      .map((volume) => volume.split(':')[0])
       .filter(Boolean);
 
   async function refresh() {
@@ -31,14 +30,14 @@ export function useApps() {
       ...app,
       image: shortenImage(app.image),
       volumes: shortenVolumes(app.volumes),
-      status: running.includes(app.name) ? "running" : "stopped",
+      status: running.includes(app.name) ? 'running' : 'stopped',
     })) as App[];
   }
 
   async function addApp(name: string) {
     if (!name?.trim()) return;
 
-    await run('dx.add', { name, image: "none" });
+    await run('dx.add', { name, image: 'none' });
     await refresh();
   }
 

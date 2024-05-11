@@ -11,19 +11,11 @@
           <span class="material-icons">{{ route.icon }}</span>
           <span class="text-base hidden md:block">{{ route.name }}</span>
         </router-link>
-        <button
-          v-if="isLoggedIn"
-          class="flex items-center text-gray-900 space-x-2 py-2 px-4"
-          @click="signOut()"
-        >
+        <button v-if="isLoggedIn" class="flex items-center text-gray-900 space-x-2 py-2 px-4" @click="signOut()">
           <span class="material-icons">logout</span>
           <span class="text-base hidden md:block">Logout</span>
         </button>
-        <button
-          v-else
-          class="flex items-center text-gray-900 space-x-2 py-2 px-4"
-          @click="signIn()"
-        >
+        <button v-else class="flex items-center text-gray-900 space-x-2 py-2 px-4" @click="signIn()">
           <span class="material-icons">person</span>
           <span class="text-base hidden md:block">Sign in</span>
         </button>
@@ -37,9 +29,9 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useAuth } from "../composables/useAuth";
-import { useRouter } from "../composables/useRouter";
+import { computed } from 'vue';
+import { useAuth } from '../composables/useAuth';
+import { useRouter } from '../composables/useRouter';
 
 const { isLoggedIn, signOut, signIn } = useAuth();
 const { topPages } = useRouter();

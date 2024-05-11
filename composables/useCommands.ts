@@ -1,20 +1,20 @@
-import { ref } from "vue";
-import { usePreference } from "./usePreference";
-import { useEnv } from "./useEnv";
-import { useAuth } from "./useAuth";
+import { ref } from 'vue';
+import { usePreference } from './usePreference';
+import { useEnv } from './useEnv';
+import { useAuth } from './useAuth';
 
 let remote: Promise<any> | null = null;
 
 async function loadRemote(host: string) {
-  const mod = await import(new URL("/index.mjs", host).toString());
+  const mod = await import(new URL('/index.mjs', host).toString());
   const { auth, run } = mod;
-  remote = new Promise(r => r({ run, auth }));
+  remote = new Promise((r) => r({ run, auth }));
 }
 
 export function useCommands() {
   const { env } = useEnv();
   const { isLoggedIn } = useAuth();
-  const [apiSecret] = usePreference("apiSecret");
+  const [apiSecret] = usePreference('apiSecret');
   const canRunCommands = ref(false);
 
   async function verify() {
@@ -26,7 +26,7 @@ export function useCommands() {
       const { auth } = await remote;
       await auth(apiSecret.value);
       canRunCommands.value = true;
-      return true
+      return true;
     } catch {
       canRunCommands.value = false;
       return false;
@@ -35,11 +35,11 @@ export function useCommands() {
 
   async function run(name: string, args?: any) {
     if (!isLoggedIn.value) {
-      return Promise.reject(new Error("Log in first"));
+      return Promise.reject(new Error('Log in first'));
     }
 
     if (!apiSecret.value) {
-      return Promise.reject(new Error("API key not found"));
+      return Promise.reject(new Error('API key not found'));
     }
 
     if (!remote) {
@@ -49,11 +49,11 @@ export function useCommands() {
 
     canRunCommands.value = true;
 
-    return remote!.then(c => c.run(name, args));
+    return remote!.then((c) => c.run(name, args));
   }
 
   async function help() {
-    return run(".help");
+    return run('.help');
   }
 
   return {

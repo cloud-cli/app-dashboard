@@ -9,7 +9,8 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
-    "@cloud-cli/typescript-config": "github:cloud-cli/typescript-config",
+    "@cloud-cli/prettier-config": "^1.0.0",
+    "@cloud-cli/typescript-config": "^1.0.1",
     "@types/node": "^20.12.9",
     "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.4.5",
@@ -17,6 +18,7 @@
     "vue-tsc": "^2.0.16"
   },
   "dependencies": {
+    "minimist-string": "^1.0.2",
     "vue": "^3.4.26",
     "vue-router": "^4.3.2"
   }

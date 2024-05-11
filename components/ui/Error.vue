@@ -8,7 +8,7 @@
 defineProps({
   error: {
     type: String,
-    default: "",
+    default: '',
   },
 });
 </script>
