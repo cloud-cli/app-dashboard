@@ -25,7 +25,7 @@ export function useAuth() {
   }
 
   async function signIn() {
-    return auth.value.signIn();
+    return auth.value.signIn(true);
   }
 
   const setProperty = (...args) => auth.value?.setProperty(...args);

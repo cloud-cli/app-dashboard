@@ -33,7 +33,8 @@ function parseArgs(string: string) {
     parseableParts = parts.slice(start);
   }
 
-  for (const part of parseableParts) {
+  const lastIndex = parseableParts.length - 1;
+  for (const [index, part] of parseableParts.entries()) {
     if (part.startsWith('--')) {
       if (nextOption) {
         args[nextOption] = true;
@@ -42,6 +43,10 @@ function parseArgs(string: string) {
       }
 
       nextOption = part.slice(2);
+      if (index === lastIndex) {
+        args[nextOption] = true;
+        break;
+      }
       continue;
     }
 
