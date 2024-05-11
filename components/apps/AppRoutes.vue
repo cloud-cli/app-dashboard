@@ -1,23 +1,25 @@
 <template>
-  <div v-for="(route, index) of routeList" :key="route.domain" class="flex gap-2 mb-3">
-    <div class="w-1/3">
-      <span class="block uppercase text-xs font-medium text-gray-700">Domain</span>
-      <span class="mt-1 p-2 block w-full rounded-md border bg-gray-100">{{ route.domain }}</span>
-    </div>
+  <div class="container mx-auto p-4">
+    <div v-for="(route, index) of routeList" :key="route.domain" class="flex gap-2 mb-3">
+      <div class="w-1/3">
+        <span class="block uppercase text-xs font-medium text-gray-700">Domain</span>
+        <span class="mt-1 p-2 block w-full rounded-md border bg-gray-100">{{ route.domain }}</span>
+      </div>
 
-    <div class="flex-grow">
-      <label :for="'k' + index" class="block uppercase text-xs font-medium text-gray-700">Target</label>
-      <input
-        :id="'k' + index"
-        v-model="route.target"
-        @change="updateRoute(route)"
-        class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
-      />
-    </div>
+      <div class="flex-grow">
+        <label :for="'k' + index" class="block uppercase text-xs font-medium text-gray-700">Target</label>
+        <input
+          :id="'k' + index"
+          v-model="route.target"
+          @change="updateRoute(route)"
+          class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm"
+        />
+      </div>
 
-    <button @click="removeRoute(route)" class="pt-5">
-      <span class="material-icons">delete</span>
-    </button>
+      <button @click="removeRoute(route)" class="pt-5">
+        <span class="material-icons">delete</span>
+      </button>
+    </div>
   </div>
 </template>
 
