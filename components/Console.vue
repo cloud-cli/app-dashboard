@@ -20,6 +20,7 @@ import PageLayout from './ui/PageLayout.vue';
 import Logs from './ui/Logs.vue';
 
 function parseArgs(string: string) {
+  const quotesRe = /['"`]+/g;
   const [command, ...parts] = string.split(' ');
   const args: any = {};
   let nextOption = '';
@@ -34,7 +35,7 @@ function parseArgs(string: string) {
   }
 
   const lastIndex = parseableParts.length - 1;
-  for (const [index, part] of parseableParts.entries()) {
+  for (let [index, part] of parseableParts.entries()) {
     if (part.startsWith('--')) {
       if (nextOption) {
         args[nextOption] = true;
@@ -51,6 +52,7 @@ function parseArgs(string: string) {
     }
 
     if (nextOption) {
+      if (part.replace(quotesRe, '') === '') part = '';
       args[nextOption] = part;
       nextOption = '';
       continue;
