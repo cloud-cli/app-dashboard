@@ -4,7 +4,7 @@
       <span class="material-icons text-sm text-white">refresh</span>
     </button>
     <div class="uppercase text-xs font-medium">{{ title }}</div>
-    <div>{{ logs }}</div>
+    <div class="text-sm">{{ logs }}</div>
   </div>
 </template>
 

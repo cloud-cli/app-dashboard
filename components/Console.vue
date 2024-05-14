@@ -9,6 +9,9 @@
     </form>
 
     <Logs :logs="logs" class="my-4" />
+
+    <h2 class="font-bold mb-2">Available commands</h2>
+
     <Logs :logs="commands" @update="fetchCommands()" />
   </PageLayout>
 </template>
@@ -77,7 +80,8 @@ async function onRun() {
   const { args, command } = parseArgs(string);
 
   try {
-    logs.value = JSON.stringify(await run(command, args), null, 2);
+    const response = await run(command, args);
+    logs.value = typeof response === 'string' ? response : JSON.stringify(response, null, 2) ;
     commandInput.value = '';
   } catch (error) {
     logs.value = String(error);
