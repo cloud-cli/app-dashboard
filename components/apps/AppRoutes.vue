@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div v-for="(route, index) of routeList" :key="route.domain" class="flex gap-2 mb-3">
+    <div v-for="(route, index) of routeList" :key="route.domain" class="flex gap-2 mb-1">
       <span class="w-1/3 mt-1 p-1 block w-full rounded-md border bg-gray-100 text-sm">{{ route.domain }}</span>
       <input
         :id="'k' + index"
@@ -17,7 +17,7 @@
         @change="updateRoute(route)"
         class="mt-1 p-1 block w-full rounded-md border border-gray-300 shadow-sm text-sm flex-grow"
       />
-      <button @click="removeRoute(route)" class="pt-4">
+      <button @click="removeRoute(route)">
         <span class="material-icons">delete</span>
       </button>
     </div>
