@@ -30,8 +30,8 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useAuth } from '../composables/useAuth';
-import { useRouter } from '../composables/useRouter';
+import { useAuth } from './composables/useAuth';
+import { useRouter } from './composables/useRouter';
 
 const { isLoggedIn, signOut, signIn } = useAuth();
 const { topPages } = useRouter();
