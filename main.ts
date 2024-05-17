@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import App from './components/App.vue';
+import App from './App.vue';
 import AppError from './components/AppError.vue';
 import { router } from './composables/useRouter.js';
 import { setEnv } from './composables/useEnv.js';

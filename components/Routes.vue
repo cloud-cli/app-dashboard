@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useCommands } from '../../composables/useCommands';
+import { useCommands } from '../composables/useCommands';
 
 const { run } = useCommands();
 const routeList = ref([]);

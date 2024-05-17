@@ -1,5 +1,5 @@
 <template>
-  <PageLayout :title="'Available Commands'">
+  <PageLayout :title="'Console'">
     <form class="flex items-center" @submit.prevent="onRun()">
       <input
         class="font-mono text-sm flex-grow w-full p-2 block rounded-l-md border border-gray-300 shadow-sm"

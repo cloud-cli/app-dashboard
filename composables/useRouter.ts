@@ -3,7 +3,7 @@ import Console from '../components/Console.vue';
 import Settings from '../components/Settings.vue';
 import AppList from '../components/apps/AppList.vue';
 import AppDetails from '../components/apps/AppDetails.vue';
-import AppRoutes from '../components/apps/AppRoutes.vue';
+import AppRoutes from '../components/Routes.vue';
 
 const topPages = [
   {

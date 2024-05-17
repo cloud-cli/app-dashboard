@@ -1,18 +1,20 @@
 import { ref, onMounted } from 'vue';
 
 const isLoggedIn = ref(false);
+const profile = ref(null);
 const auth: any = ref(null);
 
-export function useAuth() {
-  const profile = ref(null);
+function setProfile(p) {
+  profile.value = p;
+  isLoggedIn.value = !!p;
+}
 
+export function useAuth() {
   async function refresh() {
     try {
-      profile.value = await auth.value.getProfile();
-      isLoggedIn.value = !!profile.value;
+      setProfile(await auth.value.getProfile());
     } catch {
-      profile.value = null;
-      isLoggedIn.value = false;
+      setProfile(null);
     }
   }
 
@@ -45,5 +47,7 @@ export function useAuth() {
 }
 
 export async function load(env) {
-  auth.value = await import(String(new URL('/auth.js', env.AUTH_HOST)));
+  const lib = await import(String(new URL('/auth.js', env.AUTH_HOST)));
+  auth.value = lib;
+  lib.events.addEventListener('signin', (e: CustomEvent) => setProfile(e.detail));
 }
