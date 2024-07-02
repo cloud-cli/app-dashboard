@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "vue": "^3.4.26",
-    "vue-router": "^4.3.2",
+    "vue-router": "^4.3.3",
     "yargs": "^17.7.2"
   }
 }
