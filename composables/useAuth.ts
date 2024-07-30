@@ -9,14 +9,15 @@ function setProfile(p) {
   isLoggedIn.value = !!p;
 }
 
-export function useAuth() {
-  async function refresh() {
-    try {
-      setProfile(await auth.value.getProfile());
-    } catch {
-      setProfile(null);
-    }
+async function refresh() {
+  try {
+    setProfile(await auth.value.getProfile());
+  } catch {
+    setProfile(null);
   }
+}
+
+export function useAuth() {
 
   async function signOut() {
     try {
@@ -50,4 +51,5 @@ export async function load(env) {
   const lib = await import(String(new URL('/index.mjs', env.AUTH_HOST)));
   auth.value = lib;
   lib.events.addEventListener('state', (e: CustomEvent) => setProfile(e.detail));
+  refresh();
 }
