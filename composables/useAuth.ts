@@ -47,7 +47,7 @@ export function useAuth() {
 }
 
 export async function load(env) {
-  const lib = await import(String(new URL('/auth.js', env.AUTH_HOST)));
+  const lib = await import(String(new URL('/index.mjs', env.AUTH_HOST)));
   auth.value = lib;
-  lib.events.addEventListener('signin', (e: CustomEvent) => setProfile(e.detail));
+  lib.events.addEventListener('state', (e: CustomEvent) => setProfile(e.detail));
 }
