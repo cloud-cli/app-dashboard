@@ -1,5 +1,5 @@
-import { useCommands } from './useCommands';
 import { ref, onMounted, watch } from 'vue';
+import { useCommands } from './useCommands.js';
 
 interface App {
   id: number;
@@ -34,6 +34,10 @@ export function useApps() {
     })) as App[];
   }
 
+  async function restart(name: string) {
+    return run('dx.restart', { name });
+  }
+
   async function addApp(name: string) {
     if (!name?.trim()) return;
 
@@ -48,5 +52,5 @@ export function useApps() {
     });
   });
 
-  return { apps, refresh, addApp };
+  return { apps, refresh, addApp, restart };
 }

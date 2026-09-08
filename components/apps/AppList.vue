@@ -41,16 +41,17 @@
           <router-link :to="'/apps/' + app.name">{{ app.name }}</router-link>
         </div>
         <div class="w-1/4">
-          <a class="underline text-blue-500 text-sm ml-4" :href="'https://' + app.host" target="_blank">{{
-            app.host
-          }}</a>
+          <a class="underline text-blue-500 text-sm ml-4" :href="'https://' + app.host" target="_blank"
+            >{{ app.host }}</a
+          >
         </div>
-        <div class="text-sm text-gray-500 w-1/4">
-          {{ app.image }}
-        </div>
+        <div class="text-sm text-gray-500">{{ app.image }}</div>
         <div class="text-sm text-gray-500 w-1/4">
           <span class="inline-block px-1 mr-1 bg-gray-100" v-for="v of app.volumes">{{ v }}</span>
         </div>
+        <button @click="restart(app.name)" class="w-6 flex-1">
+          <span class="material-icons">replay</span>
+        </button>
       </div>
     </div>
     <div v-if="showGrid" class="grid justify-items-stretch gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4">
@@ -66,9 +67,7 @@
         </div>
 
         <h2 class="text-md font-bold">
-          <router-link :to="'/apps/' + app.name">
-            {{ app.name }}
-          </router-link>
+          <router-link :to="'/apps/' + app.name"> {{ app.name }} </router-link>
         </h2>
         <a class="text-blue-500 underline" :href="'https://' + app.host" target="_blank">{{ app.host }}</a>
         <p class="text-gray-400 text-sm">{{ app.image }}</p>
@@ -78,40 +77,40 @@
 </template>
 
 <script setup>
-import { computed, ref, unref, onMounted } from 'vue';
-import { useApps } from '../../composables/useApps';
-import { useCommands } from '../../composables/useCommands';
-import { usePreference } from '../../composables/usePreference';
+  import { computed, ref, unref, onMounted } from 'vue';
+  import { useApps } from '../../composables/useApps';
+  import { useCommands } from '../../composables/useCommands';
+  import { usePreference } from '../../composables/usePreference';
 
-const search = ref('');
-const { apps, refresh, addApp } = useApps();
-const { canRunCommands, verify } = useCommands();
-const [showGrid, setShowGrid] = usePreference('showGrid');
+  const search = ref('');
+  const { apps, refresh, restart, addApp } = useApps();
+  const { canRunCommands, verify } = useCommands();
+  const [showGrid, setShowGrid] = usePreference('showGrid');
 
-function toggleView() {
-  setShowGrid(Number(showGrid.value) ? 0 : 1);
-}
-
-const filteredList = computed(() => {
-  const filter = unref(search).toLowerCase();
-  const list = unref(apps);
-
-  if (!filter) {
-    return list;
+  function toggleView() {
+    setShowGrid(Number(showGrid.value) ? 0 : 1);
   }
 
-  return list.filter((app) => app.name.toLowerCase().includes(filter));
-});
+  const filteredList = computed(() => {
+    const filter = unref(search).toLowerCase();
+    const list = unref(apps);
 
-function addAppPrompt() {
-  const name = prompt('App name', '');
-  addApp(name);
-}
+    if (!filter) {
+      return list;
+    }
 
-async function verifyAndLoad() {
-  await verify();
-  await refresh();
-}
+    return list.filter((app) => app.name.toLowerCase().includes(filter));
+  });
 
-onMounted(verifyAndLoad);
+  function addAppPrompt() {
+    const name = prompt('App name', '');
+    addApp(name);
+  }
+
+  async function verifyAndLoad() {
+    await verify();
+    await refresh();
+  }
+
+  onMounted(verifyAndLoad);
 </script>
